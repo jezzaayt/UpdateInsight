@@ -3,24 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Change Detector</title>
-    <style>
-        .success {
-            color: green; /* Style for success messages */
-        }
-        .error {
-            color: red; /* Style for error messages */
-        }
-        .info {
-            color: green; /* Style for info messages (changes detected) */
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <title>Website Diff Alerter</title>
 </head>
 <body>
-    <h1>Website Change Detector</h1>
+    <h1>Website Diff Alerter</h1>
     <form method="POST">
         <input type="text" name="url" placeholder="Enter URL" required>
-        <input type="text" name="selector" placeholder="Enter CSS Selector" required>
+        <input type="text" name="selector" placeholder="Enter CSS Selector (not required)">
         <button type="submit">Add URL</button>
     </form>
     
@@ -39,7 +29,12 @@
             <li>
                 <strong>{{ url }}</strong> - {{ data.selector }}
                 (Added: {{ data.added_date }} - Last Checked: {{ data.last_checked or 'Never' }})
-                <a href="{{ url_for('check_website_changes', url=url) }}">Check for Changes</a>
+                <form action="{{ url_for('check_website_changes', url=url) }}"  style="display:inline;">
+                    <button type="submit">Check for Changes</button>
+                </form>
+                <form action="{{ url_for('remove_url', url=url) }}" method="POST" style="display:inline;">
+                    <button type="submit">Remove</button>   
+                </form>
             </li>
         {% endfor %}
     </ul>

@@ -1,0 +1,169 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    padding: 10px 15px;
+}
+
+/* Container for the content */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Styling */
+h1 {
+    text-align: center;
+    color: #FF8C00; 
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+form input[type="text"] {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form button {
+    padding: 10px;
+    background-color: #FF8C00; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #CC5500; 
+}
+
+/* Flash Messages */
+.flash {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    color: white;
+}
+
+.flash.success {
+    background-color: #4CAF50; 
+}
+
+.flash.error {
+    background-color: #f44336; /* Red */
+}
+
+.flash.info {
+    background-color: #2196F3; /* Blue */
+}
+
+/* URL List Styling */
+.url-list {
+    margin-top: 20px;
+}
+
+.url-list ul {
+    list-style-type: none;
+}
+
+.url-list li {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fafafa;
+    transition: background-color 0.3s ease;
+}
+
+.url-list li:hover {
+    background-color: #f1f1f1;
+}
+
+/* Button for checking changes */
+.check-button {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #2196F3; /* Blue */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.check-button:hover {
+    background-color: #1976D2; /* Darker blue */
+}
+
+/* Button to remove URL */
+.remove-button {
+    padding: 10px 15px;
+    background-color: #f44336; /* Red */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.remove-button:hover {
+    background-color: #d32f2f; /* Darker red */
+}
+
+ul {
+    list-style-type: none; /* Removes bullet points */
+    padding: 0; /* Removes default padding */
+    margin: 0; /* Removes default margin */
+}
+
+li {
+    padding: 10px 15px; /* Padding for all sides */
+    margin: 5px 0; /* Space between list items */
+    border: 1px solid #FF8C00; /* Orange border */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #fff; /* White background */
+    color: #333; /* Dark text color for better contrast */
+    transition: background-color 0.3s, transform 0.3s; /* Transition effects */
+}
+
+li:hover {
+    background-color: #FF8C00; /* Change background on hover */
+    color: white; /* Change text color on hover */
+    transform: scale(.90); /* Slightly scale up on hover */
+}
+
+.success {
+    background-color: #d4edda; /* Light green background for success */
+    border-color: #c3e6cb; /* Green border */
+}
+
+.error {
+    background-color: #f8d7da; /* Light red background for errors */
+    border-color: #f5c6cb; /* Red border */
+}
+
+.info {
+    background-color: #d1ecf1; /* Light blue background for info */
+    border-color: #bee5eb; /* Blue border */
+}
+
+
