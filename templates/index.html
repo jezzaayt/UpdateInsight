@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Change Detector</title>
+    <style>
+        .success {
+            color: green; /* Style for success messages */
+        }
+        .error {
+            color: red; /* Style for error messages */
+        }
+        .info {
+            color: green; /* Style for info messages (changes detected) */
+        }
+    </style>
+</head>
+<body>
+    <h1>Website Change Detector</h1>
+    <form method="POST">
+        <input type="text" name="url" placeholder="Enter URL" required>
+        <input type="text" name="selector" placeholder="Enter CSS Selector" required>
+        <button type="submit">Add URL</button>
+    </form>
+    
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <ul>
+        {% for url, data in url_data.items() %}
+            <li>
+                <strong>{{ url }}</strong> - {{ data.selector }}
+                (Added: {{ data.added_date }} - Last Checked: {{ data.last_checked or 'Never' }})
+                <a href="{{ url_for('check_website_changes', url=url) }}">Check for Changes</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
