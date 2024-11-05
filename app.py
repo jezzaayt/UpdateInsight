@@ -67,6 +67,7 @@ def check_all_websites():
                 data["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             elif error_message:
                 flash(f"Error fetching {url}: {error_message}", "error")
+                
 
     save_data(url_data)
 def schedule_auto_check():
