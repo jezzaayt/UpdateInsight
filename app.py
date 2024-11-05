@@ -51,27 +51,33 @@ def index():
     # if https is not in the url add it
     
     if request.method == "POST":
-        
-        if "https://" not in request.form.get("url"):
-            url = "https://" + request.form.get("url")
-        else:
-            url = request.form.get("url")
-
+        url = request.form.get("url")
+        title = request.form.get("title")
         selector = request.form.get("selector")  # Optional selector input
+
+        # Always add https:// prefix to the URL
+        if not url.startswith("https://"):
+            url = "https://" + url
+
         if url:
             current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
-            url_data[url] = {
-                "selector": selector,  # Store selector, can be None
-                "previous_content_hash": None,
-                "previous_content": None,
-                "added_date": current_time,
-                "last_checked": None
-            }
-            save_data(url_data)
+            if url in url_data:
+                url_data[url]["title"] = title
+                url_data[url]["selector"] = selector
+            else:
+                url_data[url] = {
+                    "title": title,
+                    "selector": selector,  # Store selector, can be None
+                    "previous_content_hash": None,
+                    "previous_content": None,
+                    "added_date": current_time,
+                    "last_checked": None
+                }
             flash("URL added successfully!", "success")
+            save_data(url_data)
         else:
             flash("Please enter a URL.", "error")
-       
+
         return redirect(url_for("index"))
 
     # Render the HTML page with the URL data
@@ -81,7 +87,7 @@ def index():
 def go_to_website():
     url = request.args.get("url")
     return redirect(url)
-    
+
 @app.route("/check/<path:url>")
 def check_website_changes(url):
     url_data = load_data()
