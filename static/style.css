@@ -8,7 +8,7 @@
 /* Body Styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #a39d9d;
     color: #333;
     line-height: 1.6;
     padding: 10px 15px;
@@ -27,7 +27,7 @@ body {
 /* Header Styling */
 h1 {
     text-align: center;
-    color: #FF8C00; 
+    color: #000000; 
 }
 
 /* Form Styling */
