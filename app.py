@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 import json
 from datetime import datetime
 import hashlib
+from apscheduler.schedulers.background import BackgroundScheduler
+
 
 app = Flask(__name__)
 
@@ -46,8 +48,15 @@ def index():
     url_data = load_data()
 
     # Handle form submission for new URL and optional selector
+    # if https is not in the url add it
+    
     if request.method == "POST":
-        url = request.form.get("url")
+        
+        if "https://" not in request.form.get("url"):
+            url = "https://" + request.form.get("url")
+        else:
+            url = request.form.get("url")
+
         selector = request.form.get("selector")  # Optional selector input
         if url:
             current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -62,10 +71,17 @@ def index():
             flash("URL added successfully!", "success")
         else:
             flash("Please enter a URL.", "error")
+       
         return redirect(url_for("index"))
 
     # Render the HTML page with the URL data
     return render_template("index.html", url_data=url_data)
+
+@app.route("/go_to_website", methods=["GET"])
+def go_to_website():
+    url = request.args.get("url")
+    return redirect(url)
+    
 @app.route("/check/<path:url>")
 def check_website_changes(url):
     url_data = load_data()
@@ -84,10 +100,16 @@ def check_website_changes(url):
             # Update both the content and the hash
             data["previous_content_hash"] = current_hash
             data["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
-            save_data(url_data)
+            
+        if current_content:
+            previous_content = url_data[url].get("previous_content")
+            if previous_content and current_content != previous_content:
+                flash(f"Changes detected for {url}", "success")
+            url_data[url]["previous_content"] = current_content
+            url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
         elif error_message:
             flash(f"Error fetching {url}: {error_message}", "error")
-
+    save_data(url_data)
     return redirect(url_for("index"))
 
 @app.route("/remove/<path:url>", methods=["POST"])

@@ -144,6 +144,17 @@ li {
     color: #333; /* Dark text color for better contrast */
     transition: background-color 0.3s, transform 0.3s; /* Transition effects */
 }
+li.info {
+    background-color: #d1ecf1; /* Light blue background for info */
+    border-color: #bee5eb; /* Blue border */
+    transition: background-color 0.3s, transform 0.3s; /* Transition effects */
+
+}
+li.info:hover {
+    background-color: #b3e5fc; /* Lighter blue background on hover */
+    color:#333;
+    transform: scale(1.00); /* Slightly scale up on hover */
+}
 
 li:hover {
     background-color: #FF8C00; /* Change background on hover */

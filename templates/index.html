@@ -10,7 +10,7 @@
     <h1>Website Diff Alerter</h1>
     <form method="POST">
         <input type="text" name="url" placeholder="Enter URL" required>
-        <input type="text" name="selector" placeholder="Enter CSS Selector (not required)">
+        <input type="text" name="selector" placeholder="Enter CSS Selector e.g. # or . (not required)">
         <button type="submit">Add URL</button>
     </form>
     
@@ -23,6 +23,12 @@
             </ul>
         {% endif %}
     {% endwith %}
+    {% if changes %}
+        <div class="changes-detected">
+            <h3>Changes detected!</h3>
+            <pre>{{ changes|safe }}</pre>
+        </div>
+    {% endif %}
 
     <ul>
         {% for url, data in url_data.items() %}
@@ -34,6 +40,10 @@
                 </form>
                 <form action="{{ url_for('remove_url', url=url) }}" method="POST" style="display:inline;">
                     <button type="submit">Remove</button>   
+                </form>
+                <form action="{{ url_for('go_to_website') }}" method="get" target="_blank" style="display:inline;">
+                    <input type="hidden" name="url" value="{{ url }}">
+                    <button type="submit" class="btn btn-primary">Go to website</button>
                 </form>
             </li>
         {% endfor %}
