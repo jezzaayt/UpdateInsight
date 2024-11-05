@@ -143,6 +143,9 @@ li {
     background-color: #fff; /* White background */
     color: #333; /* Dark text color for better contrast */
     transition: background-color 0.3s, transform 0.3s; /* Transition effects */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 li.info {
     background-color: #d1ecf1; /* Light blue background for info */
@@ -160,6 +163,9 @@ li:hover {
     background-color: #FF8C00; /* Change background on hover */
     color: white; /* Change text color on hover */
     transform: scale(.90); /* Slightly scale up on hover */
+    border: 2px solid #ffffff; 
+    white-space: normal;
+    
 }
 
 .success {

@@ -12,6 +12,9 @@ app = Flask(__name__)
 # Set a dummy secret key to avoid session errors
 app.secret_key = 'dummy_secret_key'  # You can change this to any random string
 
+scheduler = BackgroundScheduler()
+auto_check_enabled = True
+
 # Load or initialize URL tracking data
 def load_data():
     try:
@@ -43,6 +46,52 @@ def get_content(url, selector=None):
     except requests.RequestException as e:
         return None, None, str(e)
 
+def check_all_websites():
+    url_data = load_data()
+    for url, data in url_data.items():
+        if data["previous_content"] is not None:  # Only check if the content has been previously recorded
+            selector = data.get("selector", None)
+            current_content, error_message = get_content(url, selector)
+            
+            if current_content:
+                previous_content = data["previous_content"]
+                
+                # Check for changes
+                if previous_content and current_content != previous_content:
+                    # Get a snippet of the changes
+                    change_snippet = get_change_snippet(previous_content, current_content)
+                    flash(f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}", "info")
+                
+                # Update previous content and last checked time
+                data["previous_content"] = current_content
+                data["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+            elif error_message:
+                flash(f"Error fetching {url}: {error_message}", "error")
+
+    save_data(url_data)
+def schedule_auto_check():
+    if auto_check_enabled:
+        scheduler.add_job(func=check_all_websites, trigger="interval", hours=1, id='check_all_websites')
+@app.route('/edit_title', methods=['POST'])
+def edit_title():
+    url = request.form.get('url')
+    new_title = request.form.get('new_title')
+    url_data = load_data()
+    if url in url_data:
+        url_data[url]['title'] = new_title
+        save_data(url_data)
+        flash('Title updated successfully!', 'success')
+    else:
+        flash('Error updating title', 'error')
+    return redirect(url_for('index'))
+
+def get_change_snippet(previous_content, current_content):
+    # Extract a simple snippet showing the first 50 characters of each for comparison
+    previous_snippet = previous_content[:50]
+    current_snippet = current_content[:50]
+    
+    # Return a formatted string showing the change
+    return f"Previous: '{previous_snippet}' | Current: '{current_snippet}'"
 @app.route("/", methods=["GET", "POST"])
 def index():
     url_data = load_data()
@@ -97,24 +146,31 @@ def check_website_changes(url):
         selector = data.get("selector")  # Get the selector from the data
         current_content, current_hash, error_message = get_content(url, selector)
 
-        if current_hash:
-            previous_hash = data.get("previous_content_hash")
-            if previous_hash and current_hash != previous_hash:
-                flash(f"Changes detected for {url}!", "info")
-                # Optionally store the current content if changes are detected
-                data["previous_content"] = current_content
-            # Update both the content and the hash
-            data["previous_content_hash"] = current_hash
-            data["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
-            
         if current_content:
             previous_content = url_data[url].get("previous_content")
+
             if previous_content and current_content != previous_content:
-                flash(f"Changes detected for {url}", "success")
+                change_snippet = get_change_snippet(previous_content, current_content)
+
+                flash(f"Changes detected for {url}! ", "info")
+                flash(f"Here's a snippet of the changes: {change_snippet}", "info")
+
+
             url_data[url]["previous_content"] = current_content
             url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
         elif error_message:
             flash(f"Error fetching {url}: {error_message}", "error")
+        # if current_hash:
+        #     previous_hash = data.get("previous_content_hash")
+        #     if previous_hash and current_hash != previous_hash:
+
+        #         flash(f"Changes detected for {url}!", "info")
+
+        #         # Optionally store the current content if changes are detected
+        #         data["previous_content"] = current_content
+        #     # Update both the content and the hash
+        #     data["previous_content_hash"] = current_hash
+         #   data["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
     save_data(url_data)
     return redirect(url_for("index"))
 
@@ -129,6 +185,23 @@ def remove_url(url):
         flash(f"{url} not found!", "error")
     return redirect(url_for("index"))
 
+@app.route("/toggle_auto_check")
+def toggle_auto_check():
+    global auto_check_enabled
+    auto_check_enabled = not auto_check_enabled
+    status = "enabled" if auto_check_enabled else "disabled"
+    flash(f"Automatic checking is now {status}.", "success")
+    
+    if auto_check_enabled:
+        schedule_auto_check()  # Reschedule automatic checks if enabled
+    else:
+        try:
+            scheduler.remove_job('check_all_websites')  # Remove the job if disabled
+        except KeyError:
+            pass
+
+    return redirect(url_for("index"))
+scheduler.start()
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
 
