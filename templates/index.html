@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    <title>Website Diff Alerter</title>
+    <title>Update Insights</title>
 </head>
 <body>
-    <h1>Website Diff Alerter</h1>
+    <h1>Update Insights</h1>
 
     <form action="{{ url_for('toggle_auto_check') }}" method="GET" style="display:inline;">
         <button type="submit">{{ 'Disable Automatic Checking' if auto_check_enabled else 'Enable Automatic Checking' }}</button>
@@ -40,7 +40,7 @@
         </div>
     {% endif %}
 
-
+    <div style="height: 10%; overflow-y: auto;">
     <ul>
         {% for url, data in url_data.items() %}
             <li>
@@ -67,6 +67,6 @@
             </li>
         {% endfor %}
     </ul>
-
+    </div>
 </body>
 </html>
