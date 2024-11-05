@@ -76,6 +76,10 @@ form button:hover {
 .flash.info {
     background-color: #2196F3; /* Blue */
 }
+.flash:hover {
+    opacity: 0.8;
+    transform: scale(1.00);
+}
 
 /* URL List Styling */
 .url-list {
