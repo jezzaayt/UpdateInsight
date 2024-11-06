@@ -171,6 +171,35 @@ li:hover {
     white-space: normal;
     
 }
+li button {
+    margin: 5px;
+    flex-basis: 150px; /* set a minimum width for each button */
+  }
+  
+  /* For small screens (e.g. mobile) */
+  @media (max-width: 480px) {
+    li button {
+      flex-basis: 100px; /* reduce the minimum width for each button */
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+  
+  /* For medium screens (e.g. tablet) */
+  @media (min-width: 481px) and (max-width: 768px) {
+    li button {
+      flex-basis: 120px; /* increase the minimum width for each button */
+    }
+  }
+  
+  /* For large screens (e.g. desktop) */
+  @media (min-width: 769px) {
+    li button {
+      flex-basis: 180px; /* increase the minimum width for each button */
+      
+    }
+  }
 
 .success {
     background-color: #d4edda; /* Light green background for success */
