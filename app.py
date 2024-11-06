@@ -11,7 +11,6 @@ app = Flask(__name__)
 
 # Set a dummy secret key to avoid session errors
 app.secret_key = 'dummy_secret_key'  # You can change this to any random string
-
 scheduler = BackgroundScheduler()
 auto_check_enabled = True
 
@@ -27,7 +26,6 @@ def load_data():
 def save_data(url_data):
     with open("url_data.json", "w") as file:
         json.dump(url_data, file)
-
 # Check website content for changes
 def get_content(url, selector=None):
     try:
@@ -55,13 +53,13 @@ def check_all_websites():
             
             if current_content:
                 previous_content = data["previous_content"]
-                
+                print(f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}")
+
                 # Check for changes
                 if previous_content and current_content != previous_content:
                     # Get a snippet of the changes
                     change_snippet = get_change_snippet(previous_content, current_content)
                     flash(f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}", "info")
-                
                 # Update previous content and last checked time
                 data["previous_content"] = current_content
                 data["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -99,12 +97,19 @@ def index():
 
     # Handle form submission for new URL and optional selector
     # if https is not in the url add it
+    grouped_url_data = {}
     
+    for url, data in url_data.items():
+        group = data.get('group')
+        if group not in grouped_url_data:
+            grouped_url_data[group] = []
+        grouped_url_data[group].append((url, data))
+
     if request.method == "POST":
         url = request.form.get("url")
         title = request.form.get("title")
         selector = request.form.get("selector")  # Optional selector input
-
+        group = request.form.get("group")
         # Always add https:// prefix to the URL
         if not url.startswith("https://"):
             url = "https://" + url
@@ -116,14 +121,16 @@ def index():
                 url_data[url]["selector"] = selector
             else:
                 url_data[url] = {
+                    "url": url,
                     "title": title,
                     "selector": selector,  # Store selector, can be None
                     "previous_content_hash": None,
                     "previous_content": None,
                     "added_date": current_time,
-                    "last_checked": None
+                    "last_checked": None,
+                    "group": group  # Add group to the URL data
                 }
-            flash("URL added successfully!", "success")
+            flash(f"URL added successfully! Title: {title}", "success")
             save_data(url_data)
         else:
             flash("Please enter a URL.", "error")
@@ -131,7 +138,7 @@ def index():
         return redirect(url_for("index"))
 
     # Render the HTML page with the URL data
-    return render_template("index.html", url_data=url_data)
+    return render_template("index.html", grouped_url_data=grouped_url_data)
 
 @app.route("/go_to_website", methods=["GET"])
 def go_to_website():
@@ -202,8 +209,16 @@ def toggle_auto_check():
             pass
 
     return redirect(url_for("index"))
-scheduler.start()
+
 if __name__ == "__main__":
+    print("enabled")
+    try:
+        scheduler.start()
+        print("Scheduler started")
+    except Exception as e:
+        print(f"Scheduler not started: {e}")
+        flash(f"Scheduler not started: {e}", "error")
     app.run(host="0.0.0.0", port=5000, debug=True)
+    
 
 
