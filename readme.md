@@ -14,7 +14,6 @@ This Flask application allows users to monitor specified websites for changes. W
 
 - **Python 3.8+**
 - **Flask**: `pip install flask`
-- **Flask-Cors** (if needed for cross-origin requests): `pip install flask-cors`
 - **Notyf.js**: Installed as a static resource in your project.
 
 ## Project Structure
@@ -47,3 +46,4 @@ project-directory/
 ## Future Enhancements
 
 - **Dynamic Content Update**: Automatic updates at regular intervals, eliminating the need to manually click a button every few hours.
+- **Flexible Grouping and Item Organization**: Easily reorder both groups and their contained items to suit your preferences.
