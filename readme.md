@@ -14,7 +14,6 @@ This Flask application allows users to monitor specified websites for changes. W
 
 - **Python 3.8+**
 - **Flask**: `pip install flask`
-- **Notyf.js**: Installed as a static resource in your project.
 
 ## Project Structure
 
@@ -23,7 +22,7 @@ project-directory/
 ├── static/
 │   ├─
 │   │  styles.css          # Custom styles for the app
-│   ├   script.js # For button handling 
+│   ├  script.js # For button handling 
 │   │  notifications.js    # JavaScript for Notyf and AJAX handling
 ├── templates/
 │   ├── index.html              # Main HTML template
