@@ -35,10 +35,10 @@
 {% endif %}
 
     <form method="POST">
-        <input type="text" name="url" placeholder="Enter URL" required>
-        <input type="text" name="title" placeholder="Enter title" required>
-        <input type="text" name="group" placeholder="Enter group" required>
-        <input type="text" name="selector" placeholder="Enter CSS Selector e.g. # or . (not required)">
+        <input type="text" name="url" placeholder="Enter URL (required)" required>
+        <input type="text" name="title" placeholder="Enter title (required)" required>
+        <input type="text" name="group" placeholder="Enter group (required)" required>
+        <input type="text" name="selector" placeholder="Enter CSS Selector e.g. # or . (optional)">
         <button type="submit">Add URL</button>
     </form>
    
@@ -51,9 +51,9 @@
     
 {% for group, items in grouped_url_data.items() %}
   <div class="accordion-group" style="height: 10%; overflow-y: auto;">
-    <h2>{{ group }}</h2>
+    
     <button class="accordion-button" aria-expanded="false" aria-controls="accordion-{{ loop.index }}">
-      <span class="sr-only">Toggle {{ group }}</span>
+        <h2> Toggle  {{ group }}</h2>
     </button>
     <div id="accordion-{{ loop.index }}" class="accordion-body show" aria-labelledby="accordion-{{ loop.index }}" aria-hidden="true">
       <ul>
