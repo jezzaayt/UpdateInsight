@@ -260,7 +260,7 @@ li button {
 }
 
 .accordion-button {
-    background-color: #4CAF50;
+    background-color: #FF8C00;
     color: #fff;
     padding: 10px 20px;
     border: none;
@@ -294,4 +294,51 @@ li button {
 
 .accordion-body li:last-child {
     border-bottom: none;
+}
+
+/* Adjust Notyf notification width */
+.notyf__toast {
+    max-width: 500px; /* Adjust width as needed */
+    width: 500px;
+}
+
+/* Background color for success notifications */
+.notyf__toast--success {
+    background-color: #218838; /* Green for success */
+    color: white;
+}
+
+/* Background color for error notifications */
+.notyf__toast--error {
+    background-color: #c82333; /* Red for error */
+    color: white;
+}
+
+/* Background color for warning notifications */
+.notyf__toast--warning {
+    background-color: #e0a800; /* Yellow for warning */
+    color: black;
+}
+
+/* Background color for info notifications */
+.notyf__toast--info {
+    background-color: #138496; /* Blue for info */
+    color: white;
+}
+
+/* Ripple colors for each type */
+.notyf__toast--success .notyf__ripple {
+    background-color: #218838 !important; /* Darker green for success */
+}
+
+.notyf__toast--error .notyf__ripple {
+    background-color: #c82333 !important; /* Darker red for error */
+}
+
+.notyf__toast--warning .notyf__ripple {
+    background-color: #e0a800 !important; /* Darker yellow for warning */
+}
+
+.notyf__toast--info .notyf__ripple {
+    background-color: #138496 !important; /* Darker blue for info */
 }
