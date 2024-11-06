@@ -31,11 +31,6 @@
       
           
 
-    
-
-    <button id="checkButton">Click me for Notification</button>
- 
-   
 
     
     {% with messages = get_flashed_messages(with_categories=True) %}
@@ -88,16 +83,7 @@
                 <button type="submit">Edit Title</button>
               </form>
           </li>
-          <script>
-            // Initialize Notyf after the script has been loaded
-            const notyf = new Notyf();
-        
-            // Add event listener to button
-            document.getElementById('checkButton').addEventListener('click', () => {
-                notyf.success('This is a success notification!');
-                console.log('Button clicked!');
-            });
-        </script>
+    
         {% endfor %}
       </ul>
     </div>

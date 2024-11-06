@@ -127,39 +127,52 @@ def check_changes():
 def check_website_changes(url):
     url_data = load_data()
     data = url_data.get(url)
-
-    # Detect if the request is an AJAX request
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
-    if data:
-        selector = data.get("selector")
-        current_content, current_hash, error_message = get_content(url, selector)
-
-        if current_content:
-            previous_content = url_data[url].get("previous_content")
-
-            if previous_content and current_content != previous_content:
-                change_snippet = get_change_snippet(previous_content, current_content)
-                # If AJAX request, return a JSON response with the message
-                if is_ajax:
-                    return jsonify({
-                        "status": "success",
-                        "message": f" {change_snippet}"
-                    })
-                
-            url_data[url]["previous_content"] = current_content
-            url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
-        elif error_message:
-            if is_ajax:
-                return jsonify({"status": "error", "message": f"Error fetching {url}: {error_message}"})
-    
-    else:
+    if not data:
         if is_ajax:
             return jsonify({"status": "error", "message": f"Website {url} not found in the database."})
+        return redirect(url_for("index"))
 
-    save_data(url_data)
+    # Use a default selector if none is provided
+    selector = data.get("selector")
+    if not selector:
+        # Handle the case where no selector is available
+        selector = None  # Or set a default value if needed
     
-    # Return a redirect for non-AJAX requests
+    # Fetch the content
+    current_content, current_hash, error_message = get_content(url, selector)
+
+    if current_content:
+        previous_content = url_data[url].get("previous_content")
+        if previous_content and current_content != previous_content:
+            change_snippet = get_change_snippet(previous_content, current_content)
+            if is_ajax:
+                # Update last checked time here if changes are detected
+                url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+                save_data(url_data)  # Save updated data
+                return jsonify({
+                    "status": "success",
+                    "message": f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}"
+                })
+        else:
+            if is_ajax:
+                # If no changes detected, update last checked time
+                url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+                save_data(url_data)  # Save updated data
+                return jsonify({"status": "success", "message": "No changes detected."})
+    
+    elif error_message:
+        if is_ajax:
+            return jsonify({"status": "error", "message": f"Error fetching {url}: {error_message}"})
+        else:
+            return redirect(url_for("index"))
+
+    # If no changes, ensure last checked time is updated
+    url_data[url]["previous_content"] = current_content
+    url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+    save_data(url_data)
+
     if not is_ajax:
         return redirect(url_for("index"))
 
