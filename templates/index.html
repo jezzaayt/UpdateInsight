@@ -18,7 +18,21 @@
 <body>
    
     <h1>Update Insights</h1>
-
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+{% if changes %}
+    <div class="changes-detected">
+        <h3>Changes detected!</h3>
+        <pre>{{ changes|safe }}</pre>
+    </div>
+{% endif %}
 
     <form method="POST">
         <input type="text" name="url" placeholder="Enter URL" required>
@@ -27,27 +41,12 @@
         <input type="text" name="selector" placeholder="Enter CSS Selector e.g. # or . (not required)">
         <button type="submit">Add URL</button>
     </form>
-    <div id="flash-messages" data-messages="{{ get_flashed_messages(with_categories=true)|tojson }}"></div>
-      
+   
           
 
 
     
-    {% with messages = get_flashed_messages(with_categories=True) %}
-        {% if messages %}
-            <ul>
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-    {% if changes %}
-        <div class="changes-detected">
-            <h3>Changes detected!</h3>
-            <pre>{{ changes|safe }}</pre>
-        </div>
-    {% endif %}
+   
 
     
 {% for group, items in grouped_url_data.items() %}
