@@ -168,7 +168,7 @@ ul {
 }
 
 li {
-    padding: 10px 15px; /* Padding for all sides */
+    padding: 0px 15px 0px 15px; /* Padding for all sides */
     margin: 5px 0; /* Space between list items */
     border: 1px solid #FF8C00; /* Orange border */
     border-radius: 5px; /* Rounded corners */
@@ -188,13 +188,11 @@ li.info {
 li.info:hover {
     background-color: #b3e5fc; /* Lighter blue background on hover */
     color:#333;
-    transform: scale(1.00); /* Slightly scale up on hover */
 }
 
 li:hover {
     background-color: #FF8C00; /* Change background on hover */
     color: white; /* Change text color on hover */
-    transform: scale(.90); /* Slightly scale up on hover */
     border: 2px solid #ffffff; 
     white-space: normal;
     
@@ -263,6 +261,7 @@ li button {
     background-color: #FF8C00;
     color: #fff;
     padding: 10px 20px;
+    margin-bottom: 5px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -288,7 +287,7 @@ li button {
 }
 
 .accordion-body li {
-    padding: 10px;
+    box-sizing: border-box;  
     border-bottom: 1px solid #ccc;
 }
 
