@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 import requests
+from flask_cors import CORS
+
 from bs4 import BeautifulSoup
 import json
 from datetime import datetime
@@ -86,8 +88,8 @@ def edit_title():
 
 def get_change_snippet(previous_content, current_content):
     # Extract a simple snippet showing the first 50 characters of each for comparison
-    previous_snippet = previous_content[:50]
-    current_snippet = current_content[:50]
+    previous_snippet = previous_content[:80]
+    current_snippet = current_content[:80]
     
     # Return a formatted string showing the change
     return f"Previous: '{previous_snippet}' | Current: '{current_snippet}'"
@@ -145,13 +147,21 @@ def go_to_website():
     url = request.args.get("url")
     return redirect(url)
 
+@app.route('/check-changes', methods=['POST'])
+def check_changes():
+    # Handle the request here
+    return jsonify({'message': 'Changes detected'})
+
 @app.route("/check/<path:url>")
 def check_website_changes(url):
     url_data = load_data()
     data = url_data.get(url)
-    
+
+    # Detect if the request is an AJAX request
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
     if data:
-        selector = data.get("selector")  # Get the selector from the data
+        selector = data.get("selector")
         current_content, current_hash, error_message = get_content(url, selector)
 
         if current_content:
@@ -159,28 +169,28 @@ def check_website_changes(url):
 
             if previous_content and current_content != previous_content:
                 change_snippet = get_change_snippet(previous_content, current_content)
-
-                flash(f"Changes detected for {url}! ", "info")
-                flash(f"Here's a snippet of the changes: {change_snippet}", "info")
-
-
+                # If AJAX request, return a JSON response with the message
+                if is_ajax:
+                    return jsonify({
+                        "status": "success",
+                        "message": f" {change_snippet}"
+                    })
+                
             url_data[url]["previous_content"] = current_content
             url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
         elif error_message:
-            flash(f"Error fetching {url}: {error_message}", "error")
-        # if current_hash:
-        #     previous_hash = data.get("previous_content_hash")
-        #     if previous_hash and current_hash != previous_hash:
+            if is_ajax:
+                return jsonify({"status": "error", "message": f"Error fetching {url}: {error_message}"})
+    
+    else:
+        if is_ajax:
+            return jsonify({"status": "error", "message": f"Website {url} not found in the database."})
 
-        #         flash(f"Changes detected for {url}!", "info")
-
-        #         # Optionally store the current content if changes are detected
-        #         data["previous_content"] = current_content
-        #     # Update both the content and the hash
-        #     data["previous_content_hash"] = current_hash
-         #   data["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
     save_data(url_data)
-    return redirect(url_for("index"))
+    
+    # Return a redirect for non-AJAX requests
+    if not is_ajax:
+        return redirect(url_for("index"))
 
 @app.route("/remove/<path:url>", methods=["POST"])
 def remove_url(url):
