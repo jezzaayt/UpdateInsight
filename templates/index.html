@@ -10,14 +10,20 @@
     <script src="https://cdn.jsdelivr.net/npm/notyf@3.3.0/notyf.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='notifications.js') }}"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     
-    <title>Update Insights</title>
+    <title class="title">Update Insights</title>
 </head>
 <body>
    
     <h1>Update Insights</h1>
+    <i id="theme-icon" class="fas fa-sun" onclick="toggleTheme()"></i>
+
     {% with messages = get_flashed_messages(with_categories=True) %}
     {% if messages %}
         <ul>
@@ -38,7 +44,7 @@
         <input type="text" name="url" placeholder="Enter URL (required)" required>
         <input type="text" name="title" placeholder="Enter title (required)" required>
         <input type="text" name="group" placeholder="Enter group (required)" required>
-        <input type="text" name="selector" placeholder="Enter CSS Selector e.g. # or . (optional)">
+        <input type="text" name="selector" placeholder="Enter CSS Selector e.g. # (id) or . (class) (optional box)">
         <button type="submit">Add URL</button>
     </form>
    
@@ -82,11 +88,13 @@
                 <button type="submit">Edit Title</button>
               </form>
           </li>
-    
+       
         {% endfor %}
       </ul>
     </div>
   </div>
+  {% else %}
+  <span class="empty">Empty Form...</span>
 {% endfor %}
 </div>
 

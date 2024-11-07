@@ -8,26 +8,58 @@
 /* Body Styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #a39d9d;
-    color: #333;
+    color: #000;
     line-height: 1.6;
     padding: 10px 15px;
+    background-color: #FFD700     
 }
+body.dark-mode {
+    background-color: #333; /* dark mode */
+    color: #f2f2f2;
+  }
 
 /* Container for the content */
 .container {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
-    background: white;
+    background: #f2f2f2;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Roboto", sans-serif;
+   
+}
+
+p, div {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+h1 {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.button {
+    background-color: #FFC107; /* accent color */
+    color: #333; /* primary color */
+    border-radius: 5px;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .background {
+    height: 100vh;
+    width: 100vw;
+  }
+
 
 /* Header Styling */
 h1 {
     text-align: center;
-    color: #000000; 
 }
 
 /* Form Styling */
@@ -152,7 +184,7 @@ div.form-container button:hover {
     padding: 10px 15px;
     background-color: #f44336; /* Red */
     color: white;
-    border: none;
+    border: 1px;
     border-radius: 4px;
     cursor: pointer;
 }
@@ -170,7 +202,7 @@ ul {
 li {
     padding: 0px 15px 0px 15px; /* Padding for all sides */
     margin: 5px 0; /* Space between list items */
-    border: 1px solid #FF8C00; /* Orange border */
+    border: 2px solid #FF8C00; /* Orange border */
     border-radius: 5px; /* Rounded corners */
     background-color: #fff; /* White background */
     color: #333; /* Dark text color for better contrast */
@@ -178,6 +210,10 @@ li {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    transition-duration: 0.5s;
+    border-bottom: 1px solid #FF8C00 !important
+    
+
 }
 li.info {
     background-color: #d1ecf1; /* Light blue background for info */
@@ -193,15 +229,23 @@ li.info:hover {
 li:hover {
     background-color: #FF8C00; /* Change background on hover */
     color: white; /* Change text color on hover */
-    border: 2px solid #ffffff; 
+    border: 2px solid #FF8C00; /* Change border color on hover */
     white-space: normal;
+    font-weight: 800;
+   
     
 }
 li button {
     margin: 5px;
     flex-basis: 150px; /* set a minimum width for each button */
   }
-  
+
+.empty {
+margin: 5px;
+flex-basis: 150px; /* set a minimum width for each button */
+border-radius: 5px;
+}
+
   /* For small screens (e.g. mobile) */
   @media (max-width: 480px) {
     li button {
@@ -341,3 +385,4 @@ li button {
 .notyf__toast--info .notyf__ripple {
     background-color: #138496 !important; /* Darker blue for info */
 }
+
