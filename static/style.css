@@ -57,6 +57,18 @@ h1 {
     padding: 10px 20px;
     transition: background-color 0.3s ease;
   }
+  .dark-mode .accordion-button {
+    background-color: #FF6600;
+    color: #000000;
+  }
+  .dark-mode form button {
+    background-color: #FF6600;
+    color: #000;
+  }
+  .dark-mode div.form-container button {
+    background-color: #FF6600;
+    color: #000;
+  }
   
   .background {
     height: 100vh;
