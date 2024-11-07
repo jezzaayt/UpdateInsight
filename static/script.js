@@ -19,16 +19,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  function applyTheme() {
+    const body = document.body;
+    const themeIcon = document.getElementById('theme-icon');
+    const currentTheme = localStorage.getItem('theme');
+  
+    if (body && themeIcon) {
+      if (currentTheme === 'dark') {
+        body.classList.add('dark-mode');
+        themeIcon.classList.remove('fas', 'fa-sun');
+        themeIcon.classList.add('fas', 'fa-moon');
+      } else {
+        body.classList.remove('dark-mode');
+        themeIcon.classList.remove('fas', 'fa-moon');
+        themeIcon.classList.add('fas', 'fa-sun');
+      }
+    }
+  }
+  
   function toggleTheme() {
     const body = document.body;
     const themeIcon = document.getElementById('theme-icon');
-    if (body.classList.contains('dark-mode')) {
-      body.classList.remove('dark-mode');
-      themeIcon.classList.remove('fas fa-moon');
-      themeIcon.classList.add('fas fa-sun');
+    const currentTheme = localStorage.getItem('theme');
+  
+    if (currentTheme === 'light') {
+      localStorage.setItem('theme', 'dark');
+      console.log('Theme saved as dark');
+
+      
+      applyTheme();
     } else {
-      body.classList.add('dark-mode');
-      themeIcon.classList.remove('fas fa-sun');
-      themeIcon.classList.add('fas fa-moon');
+      localStorage.setItem('theme', 'light');
+      console.log('Theme saved as light');
+      applyTheme();
     }
   }
+  
+  // Call applyTheme when the page loads
+  applyTheme();
+  
+  window.addEventListener('DOMContentLoaded', applyTheme);
