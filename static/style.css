@@ -18,6 +18,13 @@ body.dark-mode {
     color: #f2f2f2;
   }
 
+  #theme-icon {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 10px;
+  }
+
 /* Container for the content */
 .container {
     max-width: 800px;
