@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory
 import requests
 
 from bs4 import BeautifulSoup
@@ -92,12 +92,14 @@ def index():
                 url_data[url]["title"] = title
                 url_data[url]["selector"] = selector
             else:
+                # Fetch the content of the newly added URL
+                content, content_hash, _ = get_content(url, selector)
                 url_data[url] = {
                     "url": url,
                     "title": title,
                     "selector": selector,  # Store selector, can be None
-                    "previous_content_hash": None,
-                    "previous_content": None,
+                    "previous_content": content,  # Store the content as previous_content
+                    "previous_content_hash": content_hash,
                     "added_date": current_time,
                     "last_checked": None,
                     "group": group  # Add group to the URL data
@@ -149,6 +151,9 @@ def check_website_changes(url):
             if is_ajax:
                 # Update last checked time here if changes are detected
                 url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+                url_data[url]["previous_content"] = current_content
+                url_data[url]["previous_content_hash"] = current_hash  # Update the previous content hash
+   
                 save_data(url_data)  # Save updated data
                 return jsonify({
                     "status": "success",
@@ -160,17 +165,16 @@ def check_website_changes(url):
                 url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
                 save_data(url_data)  # Save updated data
                 return jsonify({"status": "success", "message": "No changes detected."})
-    
-    elif error_message:
+    else:
         if is_ajax:
-            return jsonify({"status": "error", "message": f"Error fetching {url}: {error_message}"})
-        else:
-            return redirect(url_for("index"))
-
-    # If no changes, ensure last checked time is updated
+            return jsonify({"status": "error", "message": error_message})
+            
+    # Update previous_content regardless of whether changes were detected
     url_data[url]["previous_content"] = current_content
+    url_data[url]["previous_content_hash"] = current_hash  # Update the previous content hash
     url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
     save_data(url_data)
+    print("Changes detected for:", url)
 
     if not is_ajax:
         return redirect(url_for("index"))
@@ -185,6 +189,11 @@ def remove_url(url):
     else:
         flash(f"{url} not found!", "error")
     return redirect(url_for("index"))
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('static', 'favicon.ico')
 
 if __name__ == "__main__":
 
