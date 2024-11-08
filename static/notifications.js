@@ -48,10 +48,12 @@ document.addEventListener('DOMContentLoaded', function() {
           const baseUrl = url.split('?')[1].replace("url=", ""); // extract the base URL
           const notyf = new Notyf();
           if (urlData && urlData[baseUrl]) {
-            notyf.success(`Current content for ${baseUrl}: ${urlData[baseUrl].previous_content}`);
-          } else {
-            notyf.error(`No data found for ${baseUrl}`);
-          }
+            const lastCheckedDate = urlData[baseUrl].last_checked;
+            console.log('lastCheckedDate:', lastCheckedDate);
+            notyf.success(`Current content for ${baseUrl}: ${urlData[baseUrl].previous_content}<br>Last checked: ${lastCheckedDate}`);
+            } else {
+            notyf.error(`No data found for ${baseUrl}<br>Last checked: N/A`);
+            }
         });
       });
 });
