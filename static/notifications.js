@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Safely check for data availability
                     const notyf = new Notyf();
                     const currentBaseUrl = baseUrl;
-    
+                    
                     if (data && Object.keys(data).length > 0) {
                         console.log('data:', data);
                         console.log(Object.keys(data));
@@ -74,7 +74,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else {
                         console.log('data:', data);
                         console.log('No data found for:', currentBaseUrl);
-                        notyf.error(`No data found for ${currentBaseUrl}<br>Last checked: N/A`);
+                        const notyf = new Notyf();
+                        
+                        notyf.error({
+                            message: `No data found for: <br>${currentBaseUrl}<br> Check Changes or visit the URL`,
+                            duration: 3000,
+                            dismissible: true,})
+                       
+
                     }
                 })
                 .catch(error => {
@@ -82,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const notyf = new Notyf();
                     notyf.error('An error occurred while fetching data.');
                 });
+                
         });
     });
 
