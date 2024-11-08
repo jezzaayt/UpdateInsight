@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory
 import requests
 import urllib
+from urllib.parse import urlparse, urlunparse
 from bs4 import BeautifulSoup
 import json
 from datetime import datetime
@@ -88,7 +89,9 @@ def index():
         # Always add https:// prefix to the URL
         if not url.startswith("https://"):
             url = "https://" + url
-
+        parsed_url = urlparse(url)
+        reconstructed_url = urlunparse((parsed_url.scheme, parsed_url.netloc, parsed_url.path, parsed_url.params, parsed_url.query, parsed_url.fragment))
+        url = reconstructed_url
         if url:
             current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
             if url in url_data:

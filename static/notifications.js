@@ -36,29 +36,54 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     document.querySelectorAll('.show-content-btn').forEach(button => {
         button.addEventListener('click', function(e) {
-          e.preventDefault();
-      
-          const url = button.getAttribute('data-url');
-          const baseUrl = url.replace('/get_previous_content?url=', '').split("content/")[1];
-          console.log('baseUrl:', baseUrl.split("content/")[1]);
+            e.preventDefault();
+    
+            // Get the URL and remove the prefix
+            const url = button.getAttribute('data-url').replace('/get_previous_content/', '');
+            const rawBaseUrl = url.replace('/get_previous_content?url=', '');
+            
+            // Decode the base URL to fix any over-encoding
+            const baseUrl = decodeURIComponent(rawBaseUrl).replace("/get_previous_content/","");
+            
             console.log('baseUrl:', baseUrl);
             console.log('url:', url);
-          fetch(`/get_previous_content/${baseUrl}`)
-            .then(response => response.json())
-            .then(data => {
-              const notyf = new Notyf();
-              const currentBaseUrl = baseUrl; // Define baseUrl within the inner scope
-              if (data) {
-                const lastCheckedDate = data.last_checked;
-                console.log('lastCheckedDate:', lastCheckedDate);
-                notyf.success(`Current content for ${currentBaseUrl}: ${data.previous_content}<br>Last checked: ${lastCheckedDate}`);
-              } else {
-                console.log('No data found for:', currentBaseUrl);
-                notyf.error(`No data found for ${currentBaseUrl}<br>Last checked: N/A`);
-              }
-            });
+    
+            fetch(`/get_previous_content/${baseUrl}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Safely check for data availability
+                    const notyf = new Notyf();
+                    const currentBaseUrl = baseUrl;
+    
+                    if (data && Object.keys(data).length > 0) {
+                        console.log('data:', data);
+                        console.log(Object.keys(data));
+                        objN = currentBaseUrl
+                        const previousContent = data.previous_content || "No previous content available";
+                        const lastCheckedDate = data.last_checked || "N/A";
+                        
+                        console.log('previousContent:', previousContent);
+                        console.log('lastCheckedDate:', lastCheckedDate);
+    
+                        notyf.success(`Current content for ${currentBaseUrl}: ${previousContent}<br>Last checked: ${lastCheckedDate}`);
+                    } else {
+                        console.log('data:', data);
+                        console.log('No data found for:', currentBaseUrl);
+                        notyf.error(`No data found for ${currentBaseUrl}<br>Last checked: N/A`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    const notyf = new Notyf();
+                    notyf.error('An error occurred while fetching data.');
+                });
         });
-      });
+    });
 
 
    
