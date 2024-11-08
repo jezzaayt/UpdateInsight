@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Attach event listener to buttons with class 'check-changes-btn'
-    let urlData;
-   
+
+    const notyf = new Notyf();
     document.querySelectorAll('.check-changes-btn').forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault(); // Prevent the form from submitting and page refresh
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => response.json()) // Expecting JSON response from the backend
             .then(data => {
-                const notyf = new Notyf();
+               
                 if (data.status === 'success') {
                     // Display success notification if changes are detected
                     notyf.success(data.message);
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 // Handle any errors in the request
-                const notyf = new Notyf();
+                
                 notyf.error("Error checking website changes.");
             });
         });
@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Decode the base URL to fix any over-encoding
             const baseUrl = decodeURIComponent(rawBaseUrl).replace("/get_previous_content/","");
-            
             console.log('baseUrl:', baseUrl);
             console.log('url:', url);
     
@@ -57,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(data => {
                     // Safely check for data availability
-                    const notyf = new Notyf();
+                    
                     const currentBaseUrl = baseUrl;
                     
                     if (data && Object.keys(data).length > 0) {
@@ -74,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else {
                         console.log('data:', data);
                         console.log('No data found for:', currentBaseUrl);
-                        const notyf = new Notyf();
+                        
                         
                         notyf.error({
                             message: `No data found for: <br>${currentBaseUrl}<br> Check Changes or visit the URL`,
@@ -87,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => {
                     console.error('Fetch error:', error);
-                    const notyf = new Notyf();
+                  
                     notyf.error('An error occurred while fetching data.');
                 });
                 
