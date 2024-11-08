@@ -79,7 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         notyf.error({
                             message: `No data found for: <br>${currentBaseUrl}<br> Check Changes or visit the URL`,
                             duration: 3000,
-                            dismissible: true,})
+                            dismissible: true,
+                        icon:false})
                        
 
                     }
