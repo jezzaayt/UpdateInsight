@@ -20,6 +20,7 @@ def load_data():
             return json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
+    
 
 # Save URL tracking data
 def save_data(url_data):
@@ -113,16 +114,22 @@ def index():
 
     # Render the HTML page with the URL data
     return render_template("index.html", grouped_url_data=grouped_url_data)
+@app.route("/get_previous_content", methods=["GET"])
+def get_previous_content():
+    url = request.args.get("url")
+    url_data = load_data()
+    data = url_data.get(url)
+    if data:
+        return jsonify({"status": "success", "previous_content": data["previous_content"]})
+    else:
+        return jsonify({"status": "error", "message": f"Website {url} not found in the database."})
 
 @app.route("/go_to_website", methods=["GET"])
 def go_to_website():
     url = request.args.get("url")
     return redirect(url)
 
-@app.route('/check-changes', methods=['POST'])
-def check_changes():
-    # Handle the request here
-    return jsonify({'message': 'Changes detected'})
+
 
 @app.route("/check/<path:url>")
 def check_website_changes(url):

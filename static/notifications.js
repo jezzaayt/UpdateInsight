@@ -1,5 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Attach event listener to buttons with class 'check-changes-btn'
+    let urlData;
+    fetch('/get_previous_content')
+  .then(response => response.json())
+  .then(data => {
+    urlData = data;
+    console.log('urlData:', urlData);
+  });
     document.querySelectorAll('.check-changes-btn').forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault(); // Prevent the form from submitting and page refresh
@@ -32,4 +39,19 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+    document.querySelectorAll('.show-content-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          const url = button.getAttribute('data-url');
+          console.log('url:', url);
+          console.log('urlData:', urlData);
+          const baseUrl = url.split('?')[1].replace("url=", ""); // extract the base URL
+          const notyf = new Notyf();
+          if (urlData && urlData[baseUrl]) {
+            notyf.success(`Current content for ${baseUrl}: ${urlData[baseUrl].previous_content}`);
+          } else {
+            notyf.error(`No data found for ${baseUrl}`);
+          }
+        });
+      });
 });
