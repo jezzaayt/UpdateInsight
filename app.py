@@ -160,26 +160,28 @@ def check_website_changes(url):
     current_content, current_hash, error_message = get_content(url, selector)
 
     if current_content:
-        previous_content = url_data[url].get("previous_content")
-        if previous_content and current_content != previous_content:
-            change_snippet = get_change_snippet(previous_content, current_content)
-            if is_ajax:
-                # Update last checked time here if changes are detected
-                url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
-                url_data[url]["previous_content"] = current_content
-                url_data[url]["previous_content_hash"] = current_hash  # Update the previous content hash
-   
-                save_data(url_data)  # Save updated data
-                return jsonify({
-                    "status": "success",
-                    "message": f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}"
-                })
-        else:
-            if is_ajax:
-                # If no changes detected, update last checked time
-                url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
-                save_data(url_data)  # Save updated data
-                return jsonify({"status": "success", "message": "No changes detected."})
+        previous_hash = data.get("previous_content_hash")
+        if current_hash != previous_hash:
+            previous_content = url_data[url].get("previous_content")
+            if previous_content and current_content != previous_content:
+                change_snippet = get_change_snippet(previous_content, current_content)
+                if is_ajax:
+                    # Update last checked time here if changes are detected
+                    url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+                    url_data[url]["previous_content"] = current_content
+                    url_data[url]["previous_content_hash"] = current_hash  # Update the previous content hash
+    
+                    save_data(url_data)  # Save updated data
+                    return jsonify({
+                        "status": "success",
+                        "message": f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}"
+                    })
+            else:
+                if is_ajax:
+                    # If no changes detected, update last checked time
+                    url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+                    save_data(url_data)  # Save updated data
+                    return jsonify({"status": "success", "message": "No changes detected."})
     else:
         if is_ajax:
             return jsonify({"status": "error", "message": error_message})
