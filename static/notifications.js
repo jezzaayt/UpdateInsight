@@ -1,12 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Attach event listener to buttons with class 'check-changes-btn'
     let urlData;
-    fetch('/get_previous_content')
-  .then(response => response.json())
-  .then(data => {
-    urlData = data;
-    console.log('urlData:', urlData);
-  });
+   
     document.querySelectorAll('.check-changes-btn').forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault(); // Prevent the form from submitting and page refresh
@@ -42,18 +37,29 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.show-content-btn').forEach(button => {
         button.addEventListener('click', function(e) {
           e.preventDefault();
+      
           const url = button.getAttribute('data-url');
-          console.log('url:', url);
-          console.log('urlData:', urlData);
-          const baseUrl = url.split('?')[1].replace("url=", ""); // extract the base URL
-          const notyf = new Notyf();
-          if (urlData && urlData[baseUrl]) {
-            const lastCheckedDate = urlData[baseUrl].last_checked;
-            console.log('lastCheckedDate:', lastCheckedDate);
-            notyf.success(`Current content for ${baseUrl}: ${urlData[baseUrl].previous_content}<br>Last checked: ${lastCheckedDate}`);
-            } else {
-            notyf.error(`No data found for ${baseUrl}<br>Last checked: N/A`);
-            }
+          const baseUrl = url.replace('/get_previous_content?url=', '').split("content/")[1];
+          console.log('baseUrl:', baseUrl.split("content/")[1]);
+            console.log('baseUrl:', baseUrl);
+            console.log('url:', url);
+          fetch(`/get_previous_content/${baseUrl}`)
+            .then(response => response.json())
+            .then(data => {
+              const notyf = new Notyf();
+              const currentBaseUrl = baseUrl; // Define baseUrl within the inner scope
+              if (data) {
+                const lastCheckedDate = data.last_checked;
+                console.log('lastCheckedDate:', lastCheckedDate);
+                notyf.success(`Current content for ${currentBaseUrl}: ${data.previous_content}<br>Last checked: ${lastCheckedDate}`);
+              } else {
+                console.log('No data found for:', currentBaseUrl);
+                notyf.error(`No data found for ${currentBaseUrl}<br>Last checked: N/A`);
+              }
+            });
         });
       });
+
+
+   
 });

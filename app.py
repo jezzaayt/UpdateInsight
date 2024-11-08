@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory
 import requests
-
+import urllib
 from bs4 import BeautifulSoup
 import json
 from datetime import datetime
@@ -61,9 +61,11 @@ def get_change_snippet(previous_content, current_content):
     # Extract a simple snippet showing the first 50 characters of each for comparison
     previous_snippet = previous_content[:80]
     current_snippet = current_content[:80]
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
     
     # Return a formatted string showing the change
-    return f"Previous: '{previous_snippet}' | Current: '{current_snippet}'"
+    return f"Previous: '{previous_snippet}' <br> Current: '{current_snippet} <br> Current Time: {current_time}'"
 @app.route("/", methods=["GET", "POST"])
 def index():
     url_data = load_data()
@@ -114,22 +116,25 @@ def index():
 
     # Render the HTML page with the URL data
     return render_template("index.html", grouped_url_data=grouped_url_data)
-@app.route("/get_previous_content", methods=["GET"])
-def get_previous_content():
-    url = request.args.get("url")
-    url_data = load_data()
-    data = url_data.get(url)
-    if data:
-        return jsonify({"status": "success", "previous_content": data["previous_content"]})
-    else:
-        return jsonify({"status": "error", "message": f"Website {url} not found in the database."})
+@app.route("/get_previous_content/<path:url>", methods=["GET"])
+def get_previous_content(url):
+    with open('url_data.json', 'r') as f:
+        data = json.load(f)
+    decoded_data = {}
+    for key, value in data.items():
+        decoded_key = urllib.parse.unquote(key)
+        decoded_data[decoded_key] = value
+    return jsonify(decoded_data.get(url, {}))
 
 @app.route("/go_to_website", methods=["GET"])
 def go_to_website():
     url = request.args.get("url")
     return redirect(url)
 
-
+@app.route('/check-changes', methods=['POST'])
+def check_changes():
+    # Handle the request here
+    return jsonify({'message': 'Changes detected'})
 
 @app.route("/check/<path:url>")
 def check_website_changes(url):
