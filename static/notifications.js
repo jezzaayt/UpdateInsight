@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const baseUrl = decodeURIComponent(rawBaseUrl).replace("/get_previous_content/","");
             console.log('baseUrl:', baseUrl);
             console.log('url:', url);
+            
     
             fetch(`/get_previous_content/${baseUrl}`)
                 .then(response => {
@@ -67,8 +68,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         objN = currentBaseUrl
                         const previousContent = data.previous_content || "No previous content available";
                         const lastCheckedDate = data.last_checked || "N/A";
-                       
-                        notyf.success(`Current content for ${currentBaseUrl}: ${previousContent}<br>Last checked: ${lastCheckedDate}`);
+                        const title = data.title || "N/A";
+                        notyf.success(`Current content for ${currentBaseUrl} <br>Title: ${title}<br> ${previousContent}<br>Last checked:${lastCheckedDate}`);
 
                     } else {
                         
