@@ -96,3 +96,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
    
 });
+
+function toggleInfo() {
+    vex.dialog.alert({
+        unsafeMessage: `   <i id="theme-icon-info" class="fa fa-info-circle"></i>&ensp; &emsp;Information:
+              <br>URL is the website link
+              <br>Title is the title you want it to be called on the page.
+              <br> Group is the group you want it to be called on the page, this is case sensitive, so tech and Tech would be two different groupings.
+              <br> Group Order is persistance on local storage. You can move the group up or down, this is to keep the order of your groups.
+              <br> CSS Selector is optional, if you want to grab a specific part of the website to update.`,
+        callback: function (value) {
+            if (value) {
+                console.log('User clicked OK');
+            } else {
+                console.log('User clicked Cancel');
+            }
+        }
+    });
+  }
