@@ -1,5 +1,5 @@
 
-# UpdateInsight
+# Insight Updates
 
 This Flask application allows users to monitor specified websites for changes. When a change is detected, users are notified via `Notyf` notifications, and the last checked time is dynamically updated without reloading the page. This setup uses AJAX to make seamless requests to the server and display the notifications.
 
@@ -38,6 +38,8 @@ project-directory/
 2. **Checking for Changes**:
    - Click on the "Check for Changes" button next to a website entry. This sends an AJAX request to the Flask backend to check for any updates on the website.
    - If changes are detected, a notification will appear, and the "Last Checked" time will be updated dynamically.
+3. **Show Content**:
+    - Allows a Notyf to show the previous saved content of the page
 
 
 
