@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Attach event listener to buttons with class 'check-changes-btn'
 
     const notyf = new Notyf();
+    ; 
     document.querySelectorAll('.check-changes-btn').forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault(); // Prevent the form from submitting and page refresh
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 notyf.error("Error checking website changes.");
             });
+            console.log(notyf.options.width)
         });
     });
     document.querySelectorAll('.show-content-btn').forEach(button => {
@@ -65,21 +67,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         objN = currentBaseUrl
                         const previousContent = data.previous_content || "No previous content available";
                         const lastCheckedDate = data.last_checked || "N/A";
-                        
-                        console.log('previousContent:', previousContent);
-                        console.log('lastCheckedDate:', lastCheckedDate);
-    
+                       
                         notyf.success(`Current content for ${currentBaseUrl}: ${previousContent}<br>Last checked: ${lastCheckedDate}`);
+
                     } else {
-                        console.log('data:', data);
-                        console.log('No data found for:', currentBaseUrl);
+                        
                         
                         
                         notyf.error({
                             message: `No data found for: <br>${currentBaseUrl}<br> Check Changes or visit the URL`,
-                            duration: 3000,
-                            dismissible: true,
-                        icon:false})
+                            })
                        
 
                     }
@@ -89,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
                   
                     notyf.error('An error occurred while fetching data.');
                 });
+                
                 
         });
     });

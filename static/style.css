@@ -206,35 +206,8 @@ form button:hover {
     background-color: #f1f1f1;
 }
 
-/* Button for checking changes */
-.check-button {
-    display: inline-block;
-    padding: 10px 15px;
-    background-color: #2196F3; /* Blue */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    text-decoration: none;
-    cursor: pointer;
-}
 
-.check-button:hover {
-    background-color: #1976D2; /* Darker blue */
-}
 
-/* Button to remove URL */
-.remove-button {
-    padding: 10px 15px;
-    background-color: #f44336; /* Red */
-    color: white;
-    border: 1px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.remove-button:hover {
-    background-color: #d32f2f; /* Darker red */
-}
 
 ul {
     list-style-type: none; /* Removes bullet points */
@@ -289,31 +262,71 @@ flex-basis: 150px; /* set a minimum width for each button */
 border-radius: 5px;
 }
 
-  /* For small screens (e.g. mobile) */
-  @media (max-width: 480px) {
+/* For small screens (e.g. mobile) */
+@media (max-width: 576px) {
     li button {
       flex-basis: 100px; /* reduce the minimum width for each button */
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
     }
+    .notyf {
+        
+  padding: 20%;
+  
+  pointer-events: none;
+  position: fixed;
+  z-index: 9999;
+  }
+    .notyf__toast--success {
+        max-width: 300px !important; /* set the width to a smaller value */
+        /* other styles */
+        flex-wrap: wrap;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      position: relative;
+  transform: translateY(25%);
+      }
+    
   }
   
   /* For medium screens (e.g. tablet) */
-  @media (min-width: 481px) and (max-width: 768px) {
+  @media (min-width: 576px) and (max-width: 768px) {
     li button {
       flex-basis: 120px; /* increase the minimum width for each button */
     }
+    .notyf {
+        
+        padding: 20%;
+        
+        pointer-events: none;
+        position: fixed;
+        z-index: 9999;
+        }
+          .notyf__toast--success {
+            max-width: 500px !important; /* set the width to a smaller value */
+            /* other styles */
+            flex-wrap: wrap;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          position: relative;
+      transform: translateY(25%);
+          }
+            
   }
   
   /* For large screens (e.g. desktop) */
   @media (min-width: 769px) {
     li button {
       flex-basis: 180px; /* increase the minimum width for each button */
-      
+    }
+    .notify__toast {
+      width: 300px !important; /* set the width to a larger value */
+      /* other styles */
     }
   }
-
 .success {
     background-color: #d4edda; /* Light green background for success */
     border-color: #c3e6cb; /* Green border */
@@ -383,9 +396,16 @@ border-radius: 5px;
 }
 
 /* Adjust Notyf notification width */
+
+.notyf {
+        
+    pointer-events: none;
+    position: fixed;
+    z-index: 9999;
+    padding: 30px;
+    }
 .notyf__toast {
-    max-width: 500px; /* Adjust width as needed */
-    width: 500px;
+    max-width: 2000px; /* Adjust width as needed */
 }
 
 /* Background color for success notifications */
