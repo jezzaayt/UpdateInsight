@@ -77,3 +77,56 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
   }
+
+  function moveGroup(event, direction) {
+    const groupDiv = event.target.closest('.accordion-group'); // Find the clicked group
+    const parentDiv = document.querySelector('.accordion-container'); // Find the parent container
+  
+    if (direction === 'up' && groupDiv.previousElementSibling) {
+      parentDiv.insertBefore(groupDiv, groupDiv.previousElementSibling); // Move the group up
+    } else if (direction === 'down' && groupDiv.nextElementSibling) {
+      parentDiv.insertBefore(groupDiv.nextElementSibling, groupDiv); // Move the group down
+    }
+  
+    // Save the new order in localStorage
+    saveOrderToLocalStorage();
+  }
+  
+  function saveOrderToLocalStorage() {
+    const groups = document.querySelectorAll('.accordion-group');
+    
+    // Log to see the elements you're selecting
+    console.log(groups);
+  
+    // Check what data-group values you're collecting
+    const groupOrder = Array.from(groups).map(group => group.getAttribute('data-group'));
+    
+    // Log the extracted groupOrder to check what you're getting
+    console.log(groupOrder);
+  
+    // Store the data in localStorage
+    localStorage.setItem('groupOrder', JSON.stringify(groupOrder));
+  
+    // Log to verify it's stored correctly
+    console.log('Data saved to localStorage:', JSON.parse(localStorage.getItem('groupOrder')))
+    console.log(document.querySelectorAll('.accordion-group')); // Should show the actual DOM elements
+
+  }
+  function restoreOrderFromLocalStorage() {
+    const savedOrder = JSON.parse(localStorage.getItem('groupOrder')); // Retrieve saved order
+    if (savedOrder) {
+      const parentDiv = document.querySelector('.accordion-container'); // Get the parent container
+  
+      savedOrder.forEach(groupName => {
+        const groupDiv = document.querySelector(`.accordion-group[data-group="${groupName}"]`); // Find each group by its data-group attribute
+        if (groupDiv) {
+          parentDiv.appendChild(groupDiv); // Reorder the groups in the container
+        }
+      });
+    }
+  }
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    restoreOrderFromLocalStorage(); // Restore the order when the page loads
+  });
+  
