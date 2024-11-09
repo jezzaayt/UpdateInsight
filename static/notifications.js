@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Attach event listener to buttons with class 'check-changes-btn'
 
-    const notyf = new Notyf();
-    ; 
+    const notyf = new Notyf({
+  duration: 2500});
+    
     document.querySelectorAll('.check-changes-btn').forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault(); // Prevent the form from submitting and page refresh
