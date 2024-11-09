@@ -81,7 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
         unsafeMessage: `Information For the page.
               <br>URL is the website link
               <br>Title is the title you want it to be called on the page.
-              <br> Group is the group you want it to be called on the page, this is case sensitive, so tech and Tech would be two different groupings. `,
+              <br> Group is the group you want it to be called on the page, this is case sensitive, so tech and Tech would be two different groupings.
+              <br> Group Order is persistance on local storage. You can move the group up or down, this is to keep the order of your groups.`,
         callback: function (value) {
             if (value) {
                 console.log('User clicked OK');
