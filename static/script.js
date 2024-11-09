@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Save the expanded state to localStorage
             localStorage.setItem(groupId, 'true');
           }
+          
       });
     });
   });

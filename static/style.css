@@ -347,7 +347,7 @@ border-radius: 5px;
       /* other styles */
     }
     .notyf__toast--error {
-        max-width: 50% !important; /* set the width to a smaller value */
+        max-width: 1000px !important; /* set the width to a smaller value */
         /* other styles */
         flex-wrap: wrap;
       overflow: hidden;
