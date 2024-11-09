@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const accordionGroups = document.querySelectorAll('.accordion-group');
-    var vex = require('vex-js');
-    vax.regisisterPLug(require("vex-dialog"));
-    vex.defaultOptions.className = 'vex-theme-os';
+  
+   
     accordionGroups.forEach(group => {
       const accordionButton = group.querySelector('.accordion-button');
   
