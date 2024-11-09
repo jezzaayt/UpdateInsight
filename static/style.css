@@ -1,3 +1,11 @@
+
+
+
+.vex-theme-default .vex-overlay {
+    background-color: rgba(100, 100, 100, 0.7); /* Neutral, semi-transparent overlay */
+}
+
+
 /* Basic Reset */
 * {
     margin: 0;
@@ -24,6 +32,13 @@ body.dark-mode {
     right: 10px;
     padding: 10px;
   }
+  #theme-icon-info {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    padding: 10px;
+  }
+
 
 /* Container for the content */
 .container {
@@ -75,6 +90,42 @@ h1 {
     width: 100vw;
   }
 
+/* Center the Vex Dialog Box */
+.vex-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center horizontally and vertically */
+    max-width: 90vw; /* Ensure responsiveness */
+    max-height: 90vh; /* Ensure responsiveness */
+    overflow-y: auto; /* Add scroll if content overflows */
+}
+
+/* Style the dialog message */
+.vex-dialog-message {
+    background-color: #d3d3d3; /* Light gray background */
+    color: #333 !important; /* Dark gray text */
+    border-radius: 8px;
+    padding: 20px;
+}
+
+/* Style the dialog buttons */
+.vex-theme-default .vex-dialog-button {
+    background-color: #d3d3d3; /* Light gray button background */
+    color: #333; /* Dark gray button text */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 5px;
+}
+
+/* Style the button container */
+.vex-dialog-buttons {
+    background-color: #d3d3d3; /* Light gray background */
+    color: #333 !important; /* Dark gray text */
+    border-radius: 8px;
+    padding: 20px;
+}
 
 /* Header Styling */
 h1 {

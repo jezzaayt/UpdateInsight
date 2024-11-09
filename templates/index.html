@@ -17,14 +17,20 @@
     <script src="{{ url_for('static', filename='notifications.js') }}"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+     <!-- CSS for Vex -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vex-js/dist/css/vex.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vex-js/dist/css/vex-theme-default.css">
 
-    
+    <!-- JavaScript for Vex -->
+    <script src="https://cdn.jsdelivr.net/npm/vex-js/dist/js/vex.combined.min.js"></script>
+
     <title class="title">Insight Updates</title>
 </head>
 <body>
    
     <h1>Insight Updates</h1>
     <i id="theme-icon" class="fas fa-sun" onclick="toggleTheme()"></i>
+    <i id="theme-icon-info" class="fa fa-info-circle" onclick="toggleInfo()"></i>
 
     {% with messages = get_flashed_messages(with_categories=True) %}
     {% if messages %}
