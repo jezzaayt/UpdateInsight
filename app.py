@@ -182,6 +182,9 @@ def check_website_changes(url):
                     url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
                     save_data(url_data)  # Save updated data
                     return jsonify({"status": "success", "message": "No changes detected."})
+        else:
+            if is_ajax:
+                return jsonify({"status": "success", "message": "No changes detected."})
     else:
         if is_ajax:
             return jsonify({"status": "error", "message": error_message})
