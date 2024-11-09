@@ -65,11 +65,11 @@
 <div class="accordion-container">
 {% for group, items in grouped_url_data.items() %}
   <div class="accordion-group"  id="accordion-{{ loop.index }}" data-group="{{ group }}" style="height: 10%; overflow-y: auto;">
-    
-    <button class="accordion-button" aria-expanded="false" aria-controls="accordion-{{ loop.index }}">
+    <button class="move-up-btn accordion-button" onclick="moveGroup(event, 'up')"><i class="fas fa-chevron-up"></i></button>
+
+    <button id="toggleButton" class="accordion-button" aria-expanded="false" aria-controls="accordion-{{ loop.index }}">
         <h2> Toggle  {{ group }}</h2>
     </button>
-    <button class="move-up-btn accordion-button" onclick="moveGroup(event, 'up')"><i class="fas fa-chevron-up"></i></button>
     <button class="move-down-btn accordion-button" onclick="moveGroup(event, 'down')"><i class="fas fa-chevron-down"></i></button>
     <div id="accordion-{{ loop.index }}" class="accordion-body show" aria-labelledby="accordion-{{ loop.index }}" aria-hidden="true">
       <ul>
