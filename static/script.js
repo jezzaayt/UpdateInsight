@@ -3,19 +3,33 @@ document.addEventListener('DOMContentLoaded', () => {
   
    
     accordionGroups.forEach(group => {
-      const accordionButton = group.querySelector('.accordion-button');
-  
-      const accordionBody = group.querySelector('.accordion-body');
-  
-      accordionButton.addEventListener('click', () => {
-  
-        if (accordionBody.classList.contains('show')) {
-          accordionBody.classList.remove('show');
-          accordionButton.setAttribute('aria-expanded', 'false');
-        } else {
+        const accordionButton = group.querySelector('.accordion-button');
+        const accordionBody = group.querySelector('.accordion-body');
+        const groupId = group.getAttribute('data-group'); // Use 'data-group' as unique ID for each group
+    
+        // Check localStorage for the saved state of each group
+        const savedState = localStorage.getItem(groupId);
+        if (savedState === 'true') {
           accordionBody.classList.add('show');
           accordionButton.setAttribute('aria-expanded', 'true');
+        } else {
+          accordionBody.classList.remove('show');
+          accordionButton.setAttribute('aria-expanded', 'false');
         }
+    
+        // Toggle visibility and save state to localStorage on button click
+        accordionButton.addEventListener('click', () => {
+          if (accordionBody.classList.contains('show')) {
+            accordionBody.classList.remove('show');
+            accordionButton.setAttribute('aria-expanded', 'false');
+            // Save the collapsed state to localStorage
+            localStorage.setItem(groupId, 'false');
+          } else {
+            accordionBody.classList.add('show');
+            accordionButton.setAttribute('aria-expanded', 'true');
+            // Save the expanded state to localStorage
+            localStorage.setItem(groupId, 'true');
+          }
       });
     });
   });
