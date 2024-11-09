@@ -36,9 +36,9 @@ def get_content(url, selector=None):
 
         if selector:
             target_content = soup.select_one(selector)
-            content_text = target_content.get_text(strip=True) if target_content else ""
+            content_text = target_content.get_text(strip=True, separator="\n") if target_content else ""
         else:
-            content_text = soup.get_text(strip=True)  # Get the entire text if no selector
+            content_text = soup.get_text(strip=True, separator="\n")  # Get the entire text if no selector
 
         content_hash = hashlib.sha256(content_text.encode()).hexdigest()  # Compute the hash
         return content_text, content_hash, None  # Return content and hash
@@ -66,7 +66,7 @@ def get_change_snippet(previous_content, current_content):
 
     
     # Return a formatted string showing the change
-    return f"Previous: '{previous_snippet}' <br> Current: '{current_snippet} <br> Current Time: {current_time}'"
+    return f"<br> Previous: '{previous_snippet}' <br> Current: '{current_snippet} <br> Current Time: {current_time}'"
 @app.route("/", methods=["GET", "POST"])
 def index():
     url_data = load_data()
