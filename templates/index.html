@@ -70,13 +70,12 @@
             <strong>{{ item[1].title or item[0] }}</strong> - {{ item[1].selector }}
           
             (Added: {{ item[1].added_date }} - Last Checked: {{ item[1].last_checked or 'Never' }})
-          
-            <div class="form-container check-changes-container" data-url="{{ url_for('check_website_changes', url=item[0]) }}">
+            <form style="display:inline;" data-url="{{ url_for('check_website_changes', url=item[0]) }}">
                 <button  class="check-changes-btn" data-url="{{ url_for('check_website_changes', url=item[0]) }}">Check for Changes</button>
-            </div>
-            <div class="form-container ">
+            </form>
+            <form style="display:inline;">
                 <button id="checkButton-{{ loop.index }}" class="show-content-btn" data-url="{{ url_for('get_previous_content', url=item[0]) }}" >Show Content</button>
-            </div>
+            </form>
             
              <form action="{{ url_for('remove_url', url=item[0]) }}" method="POST" style="display:inline;">
                 <button type="submit">Remove</button>
