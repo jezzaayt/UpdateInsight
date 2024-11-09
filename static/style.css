@@ -1,9 +1,6 @@
 
 
 
-.vex-theme-default .vex-overlay {
-    background-color: rgba(100, 100, 100, 0.7); /* Neutral, semi-transparent overlay */
-}
 
 
 /* Basic Reset */
@@ -105,7 +102,6 @@ h1 {
 .vex-dialog-message {
     background-color: #d3d3d3; /* Light gray background */
     color: #333 !important; /* Dark gray text */
-    border-radius: 8px;
     padding: 20px;
 }
 
@@ -114,7 +110,6 @@ h1 {
     background-color: #d3d3d3; /* Light gray button background */
     color: #333; /* Dark gray button text */
     border: none;
-    border-radius: 5px;
     padding: 10px 20px;
     margin: 5px;
 }
@@ -123,8 +118,13 @@ h1 {
 .vex-dialog-buttons {
     background-color: #d3d3d3; /* Light gray background */
     color: #333 !important; /* Dark gray text */
-    border-radius: 8px;
     padding: 20px;
+}
+.vex-theme-default .vex-overlay {
+    background-color: rgba(100, 100, 100, 0.7); /* Neutral, semi-transparent overlay */
+}
+.vex-dialog-form { 
+    background-color: rgba(100, 100, 100, 0.7);;
 }
 
 /* Header Styling */
