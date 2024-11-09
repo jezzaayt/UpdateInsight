@@ -43,7 +43,6 @@ project-directory/
 
 
 
-
 ## Future Enhancements
 
 - **Dynamic Content Update**: Automatic updates at regular intervals, eliminating the need to manually click a button every few hours.
