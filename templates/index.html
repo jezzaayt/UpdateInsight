@@ -74,7 +74,7 @@
     <div id="accordion-{{ loop.index }}" class="accordion-body show" aria-labelledby="accordion-{{ loop.index }}" aria-hidden="true">
       <ul>
         {% for item in items %}
-          <li>
+          <li id="item-{{ loop.index }}">
             <strong>{{ item[1].title or item[0] }}</strong> - {{ item[1].selector }}
           
             (Added: {{ item[1].added_date }} - Last Checked: {{ item[1].last_checked or 'Never' }})
@@ -98,8 +98,8 @@
                 <input type="hidden" name="url" value="{{ item[0] }}">
                 <input type="text" name="new_title" placeholder="Enter new title">
                 <button type="submit">Edit Title</button>
-              </form>
-          </li>
+              </form> 
+            </li>
        
         {% endfor %}
       </ul>
