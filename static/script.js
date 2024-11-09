@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
    
     accordionGroups.forEach(group => {
-        const accordionButton = group.querySelector('.accordion-button');
+        const toggleButton = group.querySelector('#toggleButton');
         const accordionBody = group.querySelector('.accordion-body');
         const groupId = group.getAttribute('data-group'); // Use 'data-group' as unique ID for each group
     
@@ -11,22 +11,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const savedState = localStorage.getItem(groupId);
         if (savedState === 'true') {
           accordionBody.classList.add('show');
-          accordionButton.setAttribute('aria-expanded', 'true');
+          toggleButton.setAttribute('aria-expanded', 'true');
         } else {
           accordionBody.classList.remove('show');
-          accordionButton.setAttribute('aria-expanded', 'false');
+          toggleButton.setAttribute('aria-expanded', 'false');
         }
     
         // Toggle visibility and save state to localStorage on button click
-        accordionButton.addEventListener('click', () => {
+        toggleButton.addEventListener('click', () => {
           if (accordionBody.classList.contains('show')) {
             accordionBody.classList.remove('show');
-            accordionButton.setAttribute('aria-expanded', 'false');
+            toggleButton.setAttribute('aria-expanded', 'false');
             // Save the collapsed state to localStorage
             localStorage.setItem(groupId, 'false');
           } else {
             accordionBody.classList.add('show');
-            accordionButton.setAttribute('aria-expanded', 'true');
+            toggleButton.setAttribute('aria-expanded', 'true');
             // Save the expanded state to localStorage
             localStorage.setItem(groupId, 'true');
           }
