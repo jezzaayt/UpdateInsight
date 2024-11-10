@@ -105,7 +105,6 @@ def index():
             else:
                 # Fetch the content of the newly added URL
                 content, content_hash, _ = get_content(url, selector)
-                flash(f"URL added successfully! Title: {url}", "success")
                 url_data[url] = {
                     "url": url,
                     "title": title,
