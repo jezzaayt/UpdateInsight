@@ -127,13 +127,19 @@ def index():
     return render_template("index.html", grouped_url_data=grouped_url_data)
 @app.route("/get_previous_content/<path:url>", methods=["GET"])
 def get_previous_content(url):
+
     with open('url_data.json', 'r') as f:
         data = json.load(f)
-    decoded_data = {}
-    for key, value in data.items():
-        decoded_key = urllib.parse.unquote(key)
-        decoded_data[decoded_key] = ValueError
-    return jsonify(decoded_data.get(url, {}))
+    # Attempt to find exact match or perform a wildcard match
+    matching_data = data.get(url)
+    if not matching_data:
+        for stored_url, value in data.items():
+            if url in stored_url:  # Simple wildcard match
+                matching_data = value
+                print(f"Wildcard match for {url}: {stored_url}")
+                break
+    
+    return jsonify(matching_data or {})
 
 
 @app.route("/go_to_website", methods=["GET"])
