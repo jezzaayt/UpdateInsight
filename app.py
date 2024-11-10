@@ -141,11 +141,6 @@ def go_to_website():
     url = request.args.get("url")
     return redirect(url)
 
-@app.route('/check-changes', methods=['POST'])
-def check_changes():
-    # Handle the request here
-    return jsonify({'message': 'Changes detected'})
-
 @app.route("/check/<path:url>")
 def check_website_changes(url):
     url_data = load_data()
