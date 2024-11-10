@@ -109,7 +109,10 @@ function toggleInfo() {
               <br>Title is the title you want it to be called on the page.
               <br> Group is the group you want it to be called on the page, this is case sensitive, so tech and Tech would be two different groupings.
               <br> Group Order is persistance on local storage. You can move the group up or down, this is to keep the order of your groups.
-              <br> CSS Selector is optional, if you want to grab a specific part of the website to update. This will grab the first element of this name`,
+              <br> CSS Selector is optional, if you want to grab a specific part of the website to update. This will grab the first element of this name
+              <br> If the URL is not in the list, it will be added to the list. If you want to remove a URL, you can click the X next to it.
+              <br> If there is a ? in the URL, when showning the content or checking for changes, it will conduct a simple wildcard match. So if mulitple of similar it may not be the best option`
+              ,
         callback: function (value) {
             if (value) {
                 console.log('User clicked OK');
