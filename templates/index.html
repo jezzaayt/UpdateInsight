@@ -78,11 +78,11 @@
             <strong>{{ item[1].title or item[0] }}</strong> - {{ item[1].selector }}
           
             (Added: {{ item[1].added_date }} - Last Checked: {{ item[1].last_checked or 'Never' }})
-            <form style="display:inline;" data-url="{{ url_for('check_website_changes', url=item[0]) }}">
-                <button  class="check-changes-btn" data-url="{{ url_for('check_website_changes', url=item[0]) }}">Check for Changes</button>
+            <form style="display:inline;" data-url="{{ url_for('check_website_changes', url=item[0]) | decode_url }}">
+              <button  class="check-changes-btn" data-url="{{ url_for('check_website_changes', url=item[0]) | decode_url }}">Check for Changes</button>
             </form>
             <form style="display:inline;">
-                <button id="checkButton-{{ loop.index }}" class="show-content-btn" data-url="{{ url_for('get_previous_content', url=item[0]) }}" >Show Content</button>
+                <button id="checkButton-{{ loop.index }}" class="show-content-btn" data-url="{{ url_for('get_previous_content', url=item[0])| decode_url }}" >Show Content</button>
             </form>
             
              <form action="{{ url_for('remove_url', url=item[0]) }}" method="POST" style="display:inline;">

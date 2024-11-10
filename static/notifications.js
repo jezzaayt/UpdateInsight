@@ -49,9 +49,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const baseUrl = decodeURIComponent(rawBaseUrl).replace("/get_previous_content/","");
             console.log('baseUrl:', baseUrl);
             console.log('url:', url);
-            
-    
-            fetch(`/get_previous_content/${baseUrl}`)
+            console.log('rawBaseUrl:', rawBaseUrl);
+            const rURL = rawBaseUrl.replace("amp;","")
+            console.log('rURL:', rURL);
+            fetch(`/get_previous_content/${rURL}`)
+                
+
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -60,8 +63,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(data => {
                     // Safely check for data availability
-                    
+                    console.log('data:', data);
                     const currentBaseUrl = baseUrl;
+                    console.log('currentBaseUrl:', currentBaseUrl);
                     
                     if (data && Object.keys(data).length > 0) {
                         console.log('data:', data);
@@ -70,14 +74,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         const previousContent = data.previous_content || "No previous content available";
                         const lastCheckedDate = data.last_checked || "N/A";
                         const title = data.title || "N/A";
-                        notyf.success(`Current content for ${currentBaseUrl} <br>Title: ${title}<br> ${previousContent}<br>Last checked:${lastCheckedDate}`);
+                        notyf.success(`Current content for ${rURL} <br>Title: ${title}<br> ${previousContent}<br>Last checked:${lastCheckedDate}`);
 
                     } else {
                         
                         
                         
                         notyf.error({
-                            message: `No data found for: <br>${currentBaseUrl}<br> Check Changes or visit the URL`,
+                            message: `No data found for: <br>${rURL}<br> Check Changes or visit the URL`,
                             })
                        
 
@@ -85,7 +89,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => {
                     console.error('Fetch error:', error);
-                  
+                    console.log('url:', url);
+                    console.log("Error:", error);
                     notyf.error('An error occurred while fetching data.');
                 });
                 
@@ -104,7 +109,7 @@ function toggleInfo() {
               <br>Title is the title you want it to be called on the page.
               <br> Group is the group you want it to be called on the page, this is case sensitive, so tech and Tech would be two different groupings.
               <br> Group Order is persistance on local storage. You can move the group up or down, this is to keep the order of your groups.
-              <br> CSS Selector is optional, if you want to grab a specific part of the website to update.`,
+              <br> CSS Selector is optional, if you want to grab a specific part of the website to update. This will grab the first element of this name`,
         callback: function (value) {
             if (value) {
                 console.log('User clicked OK');

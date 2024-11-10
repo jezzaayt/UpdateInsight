@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 import requests
 import urllib
 from urllib.parse import urlparse, urlunparse
+import urllib.parse
 from bs4 import BeautifulSoup
 import json
 from datetime import datetime
@@ -21,7 +22,11 @@ def load_data():
             return json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
-    
+@app.template_filter('decode_url')
+def decode_url_filter(url):
+    import urllib.parse
+    return urllib.parse.unquote(url.replace("amp%3B", ""))
+
 
 # Save URL tracking data
 def save_data(url_data):
@@ -100,6 +105,7 @@ def index():
             else:
                 # Fetch the content of the newly added URL
                 content, content_hash, _ = get_content(url, selector)
+                flash(f"URL added successfully! Title: {url}", "success")
                 url_data[url] = {
                     "url": url,
                     "title": title,
@@ -126,8 +132,9 @@ def get_previous_content(url):
     decoded_data = {}
     for key, value in data.items():
         decoded_key = urllib.parse.unquote(key)
-        decoded_data[decoded_key] = value
+        decoded_data[decoded_key] = ValueError
     return jsonify(decoded_data.get(url, {}))
+
 
 @app.route("/go_to_website", methods=["GET"])
 def go_to_website():
@@ -144,18 +151,69 @@ def check_website_changes(url):
     url_data = load_data()
     data = url_data.get(url)
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
-
     if not data:
-        if is_ajax:
-            return jsonify({"status": "error", "message": f"Website {url} not found in the database."})
-        return redirect(url_for("index"))
+        # Check if there's a matching URL in the database using a wildcard
+        # wildcard fix not great but should work 
 
+        matching_urls = [key for key in url_data.keys() if key.startswith(url)]
+        print(matching_urls[0])
+        if matching_urls:
+            data = url_data[matching_urls[0]]   
+            selector = data.get("selector")
+            if not selector:
+                # Handle the case where no selector is available
+                selector = None  # Or set a default value if needed
+            parsed_url = urlparse(data["url"])
+            new_url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path + "?" + parsed_url.query
+            # parsing in the url with the scheme net loc etc for new url from the data selector 
+
+            print(f"new_url: {new_url}")
+            # Fetch the content 
+            current_content, current_hash, error_message = get_content(new_url, data["selector"])
+            
+            if current_content:
+                previous_hash = data["previous_content_hash"]
+                if current_hash != previous_hash:
+                    
+                    previous_content = data["previous_content"]
+                    if previous_content and current_content != previous_content:
+                        change_snippet = get_change_snippet(previous_content, current_content)
+                        if is_ajax:
+                            # Update last checked time here if changes are detected
+                            data["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+                            data["previous_content"] = current_content
+                            data["previous_content_hash"] = current_hash  # Update the previous content hash
+            
+                            save_data(url_data)  # Save updated data
+                            return jsonify({
+                                "status": "success",
+                                "message": f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}"
+                            })
+                    else:
+                        if is_ajax:
+                            # If no changes detected, update last checked time
+                            data["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+                            save_data(url_data)  # Save updated data
+                            print("No changes detected.")
+                            return jsonify({"status": "success", "message": "No changes detected."})
+                else:
+                    if is_ajax:
+                        print("No changes detected.")
+                        return jsonify({"status": "success", "message": "No changes detected. <br> Same Hash detected."})
+            else:
+                if is_ajax:
+                    return jsonify({"status": "error", "message": error_message})
+            
+
+        else:
+            if is_ajax:
+                return jsonify({"status": "error", "message": f"Website {url} not found in the database."})
+            return redirect(url_for("index"))
     # Use a default selector if none is provided
     selector = data.get("selector")
     if not selector:
         # Handle the case where no selector is available
         selector = None  # Or set a default value if needed
-    
     # Fetch the content
     current_content, current_hash, error_message = get_content(url, selector)
 
@@ -184,7 +242,7 @@ def check_website_changes(url):
                     return jsonify({"status": "success", "message": "No changes detected."})
         else:
             if is_ajax:
-                return jsonify({"status": "success", "message": "No changes detected."})
+                return jsonify({"status": "success", "message": "No changes detected. <br> Same Hash detected."})
     else:
         if is_ajax:
             return jsonify({"status": "error", "message": error_message})
@@ -194,7 +252,6 @@ def check_website_changes(url):
     url_data[url]["previous_content_hash"] = current_hash  # Update the previous content hash
     url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
     save_data(url_data)
-    print("Changes detected for:", url)
 
     if not is_ajax:
         return redirect(url_for("index"))
