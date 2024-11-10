@@ -138,7 +138,6 @@ def get_previous_content(url):
                 matching_data = value
                 print(f"Wildcard match for {url}: {stored_url}")
                 break
-    
     return jsonify(matching_data or {})
 
 
