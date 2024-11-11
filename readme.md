@@ -9,6 +9,7 @@ This Flask application allows users to monitor specified websites for changes. W
 - **Real-Time Notifications**: Display changes using `Notyf` notifications in a user-friendly way.
 - **AJAX Updates**: Avoid page reloads when checking for updates, improving the user experience.
 - **Persistance Local Storage**: User changes on order of groupings or if toggle of groupings is showing is local to the machine.
+- **Flexible Grouping and Item Organization**: Easily reorder both groups and their contained items to suit your preferences.
 
 
 ## Prerequisites
@@ -44,7 +45,6 @@ project-directory/
 
 
 
-## Future Enhancements
+## Future Enhancements -- Considering
 
 - **Dynamic Content Update**: Automatic updates at regular intervals, eliminating the need to manually click a button every few hours.
-- **Flexible Grouping and Item Organization**: Easily reorder both groups and their contained items to suit your preferences.
