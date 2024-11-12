@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Attach event listener to buttons with class 'check-changes-btn'
 
     const notyf = new Notyf({
-  duration: 2500});
+  duration: 2000,
+  dismissible: true,});
     
     document.querySelectorAll('.check-changes-btn').forEach(button => {
         button.addEventListener('click', function(e) {
@@ -21,9 +22,16 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json()) // Expecting JSON response from the backend
             .then(data => {
                
-                if (data.status === 'success') {
+                if (data.status === 'success') {                    
                     // Display success notification if changes are detected
+                    const buttons = document.querySelectorAll('.notyf__dismiss-btn');
+                    buttons.forEach(button => button.click());
                     notyf.success(data.message);
+
+
+                    
+
+
                 } else {
                     // Display error notification if no changes or an issue occurred
                     notyf.error(data.message);
@@ -31,10 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 // Handle any errors in the request
-                
+                const buttons = document.querySelectorAll('.notyf__dismiss-btn');
+                buttons.forEach(button => button.click());
                 notyf.error("Error checking website changes.");
             });
-            console.log(notyf.options.width)
+            
         });
     });
     document.querySelectorAll('.show-content-btn').forEach(button => {
@@ -74,12 +83,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         const previousContent = data.previous_content || "No previous content available";
                         const lastCheckedDate = data.last_checked || "N/A";
                         const title = data.title || "N/A";
+                        const buttons = document.querySelectorAll('.notyf__dismiss-btn');
+                        buttons.forEach(button => button.click());
                         notyf.success(`Current content for ${rURL} <br>Title: ${title}<br> ${previousContent}<br>Last checked:${lastCheckedDate}`);
 
                     } else {
                         
                         
-                        
+                        const buttons = document.querySelectorAll('.notyf__dismiss-btn');
+                        buttons.forEach(button => button.click());
                         notyf.error({
                             message: `No data found for: <br>${rURL}<br> Check Changes or visit the URL`,
                             })
@@ -91,6 +103,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.error('Fetch error:', error);
                     console.log('url:', url);
                     console.log("Error:", error);
+                    const buttons = document.querySelectorAll('.notyf__dismiss-btn');
+                    buttons.forEach(button => button.click());
                     notyf.error('An error occurred while fetching data.');
                 });
                 
