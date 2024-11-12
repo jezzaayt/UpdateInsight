@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const notyf = new Notyf({
   duration: 2000,
-  dismissible: true,});
+  dismissible: true});
     
     document.querySelectorAll('.check-changes-btn').forEach(button => {
         button.addEventListener('click', function(e) {
@@ -56,11 +56,11 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Decode the base URL to fix any over-encoding
             const baseUrl = decodeURIComponent(rawBaseUrl).replace("/get_previous_content/","");
-            console.log('baseUrl:', baseUrl);
-            console.log('url:', url);
-            console.log('rawBaseUrl:', rawBaseUrl);
+            // console.log('baseUrl:', baseUrl);
+            // console.log('url:', url);
+            // console.log('rawBaseUrl:', rawBaseUrl);
             const rURL = rawBaseUrl.replace("amp;","")
-            console.log('rURL:', rURL);
+            // console.log('rURL:', rURL);
             fetch(`/get_previous_content/${rURL}`)
                 
 
@@ -72,13 +72,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(data => {
                     // Safely check for data availability
-                    console.log('data:', data);
+                    // console.log('data:', data);
                     const currentBaseUrl = baseUrl;
-                    console.log('currentBaseUrl:', currentBaseUrl);
+                    // console.log('currentBaseUrl:', currentBaseUrl);
                     
                     if (data && Object.keys(data).length > 0) {
-                        console.log('data:', data);
-                        console.log(Object.keys(data));
+                        // console.log('data:', data);
+                        // console.log(Object.keys(data));
                         objN = currentBaseUrl
                         const previousContent = data.previous_content || "No previous content available";
                         const lastCheckedDate = data.last_checked || "N/A";
@@ -100,9 +100,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 })
                 .catch(error => {
-                    console.error('Fetch error:', error);
-                    console.log('url:', url);
-                    console.log("Error:", error);
+                    // console.error('Fetch error:', error);
+                    // console.log('url:', url);
+                    // console.log("Error:", error);
                     const buttons = document.querySelectorAll('.notyf__dismiss-btn');
                     buttons.forEach(button => button.click());
                     notyf.error('An error occurred while fetching data.');
@@ -129,9 +129,9 @@ function toggleInfo() {
               ,
         callback: function (value) {
             if (value) {
-                console.log('User clicked OK');
+                 console.log('User clicked OK');
             } else {
-                console.log('User clicked Cancel');
+                 console.log('User clicked Cancel');
             }
         }
     });
