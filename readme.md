@@ -9,7 +9,7 @@ This Flask application allows users to monitor specified websites for changes. W
 - **Real-Time Notifications**: Display changes using `Notyf` notifications in a user-friendly way.
 - **AJAX Updates**: Avoid page reloads when checking for updates, improving the user experience.
 - **Persistance Local Storage**: User changes on order of groupings or if toggle of groupings is showing is local to the machine.
-- **Flexible Grouping and Item Organization**: Easily reorder both groups and their contained items to suit your preferences.
+- **Flexible Grouping and Item Organization**: Easily reorder of their groups to suit your preferences.
 
 
 ## Prerequisites
@@ -23,9 +23,9 @@ This Flask application allows users to monitor specified websites for changes. W
 project-directory/
 ├── static/
 │   ├─
-│   │  styles.css          # Custom styles for the app
-│   ├  script.js # For button handling 
-│   │  notifications.js    # JavaScript for Notyf and AJAX handling
+│   ├─  styles.css            # Custom styles for the app
+│   ├─  script.js             # For button handling 
+│   ├─  notifications.js      # JavaScript for Notyf and AJAX handling
 ├── templates/
 │   ├── index.html              # Main HTML template
 ├── app.py                      # Main Flask application file
@@ -43,8 +43,16 @@ project-directory/
 3. **Show Content**:
     - Allows a Notyf to show the previous saved content of the page
 
+## Themes
+Switching themes on the top right icon button. 
+
+1. **Bright Theme**
+   - Bright, with yellow more of a light mode but with yellow background over white.
+
+2. **Dark Theme**
+   - A usual dark mode/theme with black theme. 
 
 
-## Future Enhancements -- Considering
+## Future Enhancements -- To Consider
 
 - **Dynamic Content Update**: Automatic updates at regular intervals, eliminating the need to manually click a button every few hours.
