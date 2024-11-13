@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 import json
 from datetime import datetime
 import hashlib
-from apscheduler.schedulers.background import BackgroundScheduler
 
 
 app = Flask(__name__)
