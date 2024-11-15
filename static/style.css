@@ -274,6 +274,10 @@ a {
     display: none;
 }
 
+#dataTable {
+    width: 100%;
+}
+
 /* For small screens (e.g. mobile) */
 @media (max-width: 576px) {
     li button {
