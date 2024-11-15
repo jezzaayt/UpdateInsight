@@ -68,12 +68,16 @@
     <button class="move-up-btn accordion-button" onclick="moveGroup(event, 'up')"><i class="fas fa-chevron-up"></i></button>
 
     <button id="toggleButton" class="accordion-button" aria-expanded="false" aria-controls="accordion-{{ loop.index }}">
-        <h2> Toggle  {{ group }} ({{ items|length }})</h2>
+        <h2> Toggle  {{ group }} ({{ items|length }})</h2>  
+        
     </button>
     <button class="move-down-btn accordion-button" onclick="moveGroup(event, 'down')"><i class="fas fa-chevron-down"></i></button>
+    <form action="{{ url_for('show_all_url', group=group) }}" method="POST" style="display:inline;">
+      <button type="submit">Show All</button>
+  </form>
     <div id="accordion-{{ loop.index }}" class="accordion-body show" aria-labelledby="accordion-{{ loop.index }}" aria-hidden="true">
       <ul>
-        {% for item in items %}
+        {% for item in items if item[1].visibility %}
           <li id="item-{{ loop.index }}">
             <strong>{{ item[1].title or item[0] }}</strong> - {{ item[1].selector }}
           
@@ -99,7 +103,12 @@
                 <input type="text" name="new_title" placeholder="Enter new title">
                 <button type="submit">Edit Title</button>
               </form> 
+              <form action="{{ url_for('hide_url', url=item[0]) }}" method="POST" style="display:inline;">
+                <button type="submit">Hide</button>
+              </form>
+            
             </li>
+
        
         {% endfor %}
       </ul>

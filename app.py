@@ -112,7 +112,8 @@ def index():
                     "previous_content_hash": content_hash,
                     "added_date": current_time,
                     "last_checked": None,
-                    "group": group  # Add group to the URL data
+                    "group": group,  # Add group to the URL data
+                    "visibility": True
                 }
             flash(f"URL added successfully! Title: {title}", "success")
             save_data(url_data)
@@ -258,6 +259,31 @@ def remove_url(url):
         flash(f"Removed {url} successfully!", "success")
     else:
         flash(f"{url} not found!", "error")
+    return redirect(url_for("index"))
+
+@app.route("/hide/<path:url>", methods=["POST"])
+def hide_url(url):
+    url_data = load_data()
+    if url in url_data:
+        url_data[url]["visibility"] = False  # Set the visibility to False
+        save_data(url_data)  # Save the updated data
+        flash(f"Removed {url} successfully!", "success")
+    else:
+        flash(f"{url} not found!", "error")
+    return redirect(url_for("index"))
+@app.route("/show_all/<group>", methods=["POST"])
+def show_all_url(group):
+    url_data = load_data()
+    found = False
+    for url, data in url_data.items():
+        if data.get("group") == group:
+            data["visibility"] = True  # Set the visibility to True
+            found = True
+    if found:
+        save_data(url_data)  # Save the updated data
+        flash(f"All URLs in group {group} are now visible!", "success")
+    else:
+        flash(f"No URLs found in group {group}.", "error")
     return redirect(url_for("index"))
 
 
