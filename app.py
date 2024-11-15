@@ -134,7 +134,6 @@ def get_previous_content(url):
         for stored_url, value in data.items():
             if url in stored_url:  # Simple wildcard match
                 matching_data = value
-                print(f"Wildcard match for {url}: {stored_url}")
                 break
     return jsonify(matching_data or {})
 
@@ -154,7 +153,6 @@ def check_website_changes(url):
         # wildcard fix not great but should work 
 
         matching_urls = [key for key in url_data.keys() if key.startswith(url)]
-        print(matching_urls[0])
         if matching_urls:
             data = url_data[matching_urls[0]]   
             selector = data.get("selector")
@@ -165,7 +163,6 @@ def check_website_changes(url):
             new_url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path + "?" + parsed_url.query
             # parsing in the url with the scheme net loc etc for new url from the data selector 
 
-            print(f"new_url: {new_url}")
             # Fetch the content 
             current_content, current_hash, error_message = get_content(new_url, data["selector"])
             
@@ -192,11 +189,9 @@ def check_website_changes(url):
                             # If no changes detected, update last checked time
                             data["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
                             save_data(url_data)  # Save updated data
-                            print("No changes detected.")
                             return jsonify({"status": "success", "message": "No changes detected."})
                 else:
                     if is_ajax:
-                        print("No changes detected.")
                         return jsonify({"status": "success", "message": "No changes detected. <br> Same Hash detected."})
             else:
                 if is_ajax:
