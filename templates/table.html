@@ -1,0 +1,100 @@
+<!-- table.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Notyf CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/notyf@3.0.0/notyf.min.css" rel="stylesheet">
+
+    <!-- Notyf JS -->
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3.3.0/notyf.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="{{ url_for('static', filename='notifications.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='visibility.js') }}"></script>
+
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+     <!-- CSS for Vex -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vex-js/dist/css/vex.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vex-js/dist/css/vex-theme-default.css">
+
+    <!-- JavaScript for Vex -->
+    <script src="https://cdn.jsdelivr.net/npm/vex-js/dist/js/vex.combined.min.js"></script>
+
+    <title class="title"> Table - Insight Updates</title>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('#myTable').bootstrapTable({
+          sortName: 'name',
+          sortOrder: 'asc'
+          
+        });
+      });
+    </script>
+</head>
+<body>
+   
+<h1>Table</h1>
+<i id="theme-icon" class="fas fa-sun" onclick="toggleTheme()"></i>
+<i id="theme-icon-info" class="fa fa-info-circle" onclick="toggleInfo()"></i>
+
+<body>
+  
+
+  <table id="myTable" data-toggle="table"  style="display: inline-block;">
+    <thead>
+        <tr>
+            <th data-field="URL">URL</th>
+            <th data-field="title" data-sortable="true">Title <i class="fas fa-sort"></i></th>
+            <th data-field="added_date">Added Date</th>
+            <th data-field="last_checked">Last Checked</th>
+            <th data-field="previous_content">Previous Content</th>
+            <th data-field="previous_content_hash">Hash</th>
+            <th data-field="group" data-sortable="true">Group <i class="fas fa-sort"></i></th>
+            <th data-field="visibility">Visibility</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in data %}
+        <tr> 
+            <td><a href="{{ item.url }}" target="_blank">{{ item.url|truncate(50) }}</a></td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.added_date }}</td>
+            <td>{{ item.last_checked }}</td>
+            <td>{{ item.previous_content|truncate(50) }}</td>
+            <td>{{ item.previous_content_hash }}</td>
+            <td>{{ item.group }}</td>
+            <td>
+              
+              <span class="toggle-visibility clickable" data-url="{{ item.url }}" data-visibility="{{ item.visibility }}">
+                <i class="fas {% if item.visibility %}fa-eye{% else %}fa-eye-slash{% endif %}"></i> 
+                {{ 'Visible' if item.visibility else 'Hidden' }}
+              </span>
+               
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+
+
+</body>
+</html>
+

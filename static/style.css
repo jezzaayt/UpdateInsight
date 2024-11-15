@@ -264,6 +264,14 @@ li button {
 margin: 5px;
 flex-basis: 150px; /* set a minimum width for each button */
 border-radius: 5px;
+} 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.fixed-table-loading {
+    display: none;
 }
 
 /* For small screens (e.g. mobile) */

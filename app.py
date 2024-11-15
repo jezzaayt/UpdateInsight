@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory
 import requests
 import urllib
+import table
 from urllib.parse import urlparse, urlunparse
 import urllib.parse
 from bs4 import BeautifulSoup
@@ -10,7 +11,7 @@ import hashlib
 
 
 app = Flask(__name__)
-
+app.register_blueprint(table.table_blueprint, url_prefix='/table')
 # Set a dummy secret key to avoid session errors
 app.secret_key = 'dummy_secret_key'  # You can change this to any random string
 
@@ -123,7 +124,7 @@ def index():
         return redirect(url_for("index"))
 
     # Render the HTML page with the URL data
-    return render_template("index.html", grouped_url_data=grouped_url_data)
+    return render_template("/index.html", grouped_url_data=grouped_url_data)
 @app.route("/get_previous_content/<path:url>", methods=["GET"])
 def get_previous_content(url):
 
