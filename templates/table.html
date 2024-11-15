@@ -53,17 +53,17 @@
 <body>
   
 
-  <table id="myTable" data-toggle="table"  style="display: inline-block;">
+  <table id="dataTable" data-toggle="table"  >
     <thead>
         <tr>
             <th data-field="URL">URL</th>
             <th data-field="title" data-sortable="true">Title <i class="fas fa-sort"></i></th>
-            <th data-field="added_date">Added Date</th>
-            <th data-field="last_checked">Last Checked</th>
-            <th data-field="previous_content">Previous Content</th>
-            <th data-field="previous_content_hash">Hash</th>
             <th data-field="group" data-sortable="true">Group <i class="fas fa-sort"></i></th>
             <th data-field="visibility">Visibility</th>
+            <th data-field="added_date">Added Date</th>
+            <th data-field="last_checked">Last Checked</th>
+            <th data-field="previous_content">Content</th>
+          
             
         </tr>
     </thead>
@@ -72,10 +72,6 @@
         <tr> 
             <td><a href="{{ item.url }}" target="_blank">{{ item.url|truncate(50) }}</a></td>
             <td>{{ item.title }}</td>
-            <td>{{ item.added_date }}</td>
-            <td>{{ item.last_checked }}</td>
-            <td>{{ item.previous_content|truncate(50) }}</td>
-            <td>{{ item.previous_content_hash }}</td>
             <td>{{ item.group }}</td>
             <td>
               
@@ -83,6 +79,10 @@
                 <i class="fas {% if item.visibility %}fa-eye{% else %}fa-eye-slash{% endif %}"></i> 
                 {{ 'Visible' if item.visibility else 'Hidden' }}
               </span>
+            <td>{{ item.added_date}}</td>
+            <td>{{ item.last_checked }}</td>
+            <td>{{ item.previous_content|truncate(200) }}</td>
+            
                
             </td>
         </tr>
