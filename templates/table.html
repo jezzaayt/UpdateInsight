@@ -67,6 +67,7 @@
             <th data-field="added_date">Added Date</th>
             <th data-field="last_checked">Last Checked</th>
             <th data-field="previous_content">Content</th>
+            <th>Remove</th>
           
             
         </tr>
@@ -86,7 +87,9 @@
             <td>{{ item.added_date}}</td>
             <td>{{ item.last_checked }}</td>
             <td>{{ item.previous_content|truncate(200) }}</td>
-            
+            <td>
+              <i class="fas fa-trash clickable" data-item="{{ item.url }}" onclick="removeToggle(event)"></i>
+            </td>
                
             </td>
         </tr>
