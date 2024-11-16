@@ -314,7 +314,11 @@ a {
 }
 
 .navbar a:hover, .navbar i:hover {
-    color: #ffdd57; /* Highlight color on hover */
+    color: #333; /* Default highlight color on hover */
+}
+
+.navbar.dark-mode a:hover, .navbar.dark-mode i:hover {
+    color: #ffdd57; /* Highlight color on hover for dark mode */
 }
 
 
