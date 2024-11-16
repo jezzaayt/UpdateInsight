@@ -55,4 +55,3 @@ def table():
     return render_template('table.html', data = data.values())
 
 
-

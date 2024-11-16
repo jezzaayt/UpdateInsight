@@ -144,7 +144,6 @@ def get_previous_content(url):
 def go_to_website():
     url = request.args.get("url")
     return redirect(url)
-
 @app.route("/check/<path:url>")
 def check_website_changes(url):
     url_data = load_data()
