@@ -64,7 +64,7 @@ h1 {
     margin-top: 0.6em;
 }
 .button {
-    background-color: #FFC107; /* accent color */
+    background-color: #FFD700; /* accent color */
     color: #333; /* primary color */
     border-radius: 5px;
     padding: 10px 20px;
@@ -318,7 +318,7 @@ a {
 }
 
 .navbar.dark-mode a:hover, .navbar.dark-mode i:hover {
-    color: #ffdd57; /* Highlight color on hover for dark mode */
+    color: #FFD700; /* Highlight color on hover for dark mode */
 }
 
 
