@@ -31,7 +31,9 @@ project-directory/
 │   ├─  notifications.js      # JavaScript for Notyf and AJAX handling
 ├── templates/
 │   ├── index.html              # Main HTML template
+│   ├── table.html              # Main table template
 ├── app.py                      # Main Flask application file
+├── table.py                    # Table Flask file
 └── README.md                   # Project documentation
 ```
 
