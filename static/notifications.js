@@ -143,9 +143,32 @@ function removeToggle(event) {
 const item = event.target.dataset.item;
 if (item) {
     vex.dialog.confirm  ({
+  
     unsafeMessage: `   <i id="theme-icon-warning" class="fa fa-exclamation-circle"></i>&ensp; &emsp;Confirmation:
 <br>Are you sure you wish to delete this item?
 <br>This action cannot be undone.`,
+buttons: [
+    // Customizing the Confirm button
+    {
+      text: 'Discard Item', // Custom text
+      type: 'button',
+      className: 'vex-dialog-button-primary',
+      click: function () {
+        console.log('Confirmed!');
+        vex.close(this);
+      }
+    },
+    // Customizing the Cancel button
+    {
+      text: 'Dismiss', // Custom text
+      type: 'button',
+      className: 'vex-dialog-button-secondary',
+      click: function () {
+        console.log('Cancelled!');
+        vex.close(this);
+      }
+    }
+  ],
     callback: function (value) {
         if (value) {
         // call back to python to remove
