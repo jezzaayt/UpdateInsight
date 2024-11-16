@@ -64,7 +64,5 @@ Switching themes on the top right icon button.
 
 - **Downloadability File Export**: Consider the possibility of adding a feature to download each item's data from the JSON into a CSV or JSON file for use in other software 
 
-- **Hide Button**: Rather than completely removing it from the area, hide it from view while allowing it to be shown again in the future if needed. 
-
 - **Version History**: Storage of all changes including the date and text each.
 
