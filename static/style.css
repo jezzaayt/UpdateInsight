@@ -61,6 +61,7 @@ h1 {
     font-family: "Roboto", sans-serif;
     font-weight: 400;
     font-style: normal;
+    margin-top: 0.6em;
 }
 .button {
     background-color: #FFC107; /* accent color */
@@ -285,6 +286,32 @@ a {
     top: 15px;
     left: 40px;
 }
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    z-index: 1000; /* Ensures the navbar is above other elements */
+    padding: 1.3rem 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.navbar a, .navbar i {
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.navbar a:hover, .navbar i:hover {
+    color: #ffdd57; /* Highlight color on hover */
+}
+
 
 
 /* For small screens (e.g. mobile) */

@@ -28,10 +28,13 @@
 </head>
 <body>
    
-    <h1>Insight Updates</h1>
+    <nav class="navbar">
     <i id="theme-icon" class="fas fa-sun" onclick="toggleTheme()"></i>
     <i id="theme-icon-info" class="fa fa-info-circle" onclick="toggleInfo()"></i>
     <a href="{{ url_for('table.table', _external=True) }}" class="nav-link"><i class="fas fa-stream"></i> Table</a>
+  </nav>
+  
+  <h1>Insight Updates</h1>
     {% with messages = get_flashed_messages(with_categories=True) %}
     {% if messages %}
         <ul>
