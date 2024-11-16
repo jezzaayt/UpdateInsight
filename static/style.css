@@ -278,6 +278,15 @@ a {
     width: 100%;
 }
 
+.nav-link    {
+    text-decoration: none;
+    color: inherit;
+    position: fixed;
+    top: 15px;
+    left: 40px;
+}
+
+
 /* For small screens (e.g. mobile) */
 @media (max-width: 576px) {
     li button {
