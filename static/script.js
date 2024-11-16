@@ -36,17 +36,20 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function applyTheme() {
-    const body = document.body;
+    const body = document.body; 
+    const navbar = document.querySelector('.navbar');
     const themeIcon = document.getElementById('theme-icon');
     const currentTheme = localStorage.getItem('theme');
   
     if (body && themeIcon) {
       if (currentTheme === 'dark') {
         body.classList.add('dark-mode');
+        navbar.classList.add('dark-mode');
         themeIcon.classList.remove('fas', 'fa-sun');
         themeIcon.classList.add('fas', 'fa-moon');
       } else {
         body.classList.remove('dark-mode');
+        navbar.classList.remove('dark-mode');
         themeIcon.classList.remove('fas', 'fa-moon');
         themeIcon.classList.add('fas', 'fa-sun');
       }
