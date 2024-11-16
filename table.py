@@ -21,11 +21,7 @@ def get_all_data(return_response=True):
 
 @table_blueprint.route('/visibility/<path:url>', methods=['PUT'])
 def set_visibility(url):
-    print(f"Received PUT request to toggle visibility for URL: {url}")  # Add this line
     try:
-        # Log the received URL
-        print(f"Received PUT request to toggle visibility for URL: {url}")
-
         # Load the data from the file
         with open('url_data.json', 'r') as file:
             data = json.load(file)
@@ -34,11 +30,9 @@ def set_visibility(url):
         for item in data.values():
             if item['url'] == url:
                 item['visibility'] = not item['visibility']
-                print(f"Visibility for {url} toggled: {item['visibility']}")
                 break
         else:
             return jsonify({"error": "URL not found"}), 404
-
         # Save the updated data back to the file
         with open('url_data.json', 'w') as file:
             json.dump(data, file, indent=4)
