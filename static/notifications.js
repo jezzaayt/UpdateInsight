@@ -136,3 +136,38 @@ function toggleInfo() {
         }
     });
   }
+
+  
+
+function removeToggle(event) {
+const item = event.target.dataset.item;
+if (item) {
+    vex.dialog.confirm  ({
+    unsafeMessage: `   <i id="theme-icon-warning" class="fa fa-exclamation-circle"></i>&ensp; &emsp;Confirmation:
+<br>Are you sure you wish to delete this item?
+<br>This action cannot be undone.`,
+    callback: function (value) {
+        if (value) {
+        // call back to python to remove
+        fetch(`/remove/${encodeURIComponent(item)}`, {
+            method: 'POST'
+          })
+          .then(response => {
+            console.log('Response received:', response);
+            window.location.reload();
+            return response.json();
+          })
+          .then(data => {
+            console.log('Data received:', data);
+            window.location.reload();
+          })
+          .catch(error => {
+            console.error('Error occurred:', error);
+          });
+        }
+    }
+    });
+} else {
+    console.error('Item is not defined');
+}
+}

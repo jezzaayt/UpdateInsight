@@ -92,8 +92,9 @@
                 <button id="checkButton-{{ loop.index }}" class="show-content-btn" data-url="{{ url_for('get_previous_content', url=item[0])| decode_url }}" >Show Content</button>
             </form>
             
-             <form action="{{ url_for('remove_url', url=item[0]) }}" method="POST" style="display:inline;">
-                <button type="submit">Remove</button>
+          
+              <form action="javascript:void(0)" method="POST" style="display:inline;" >
+                <button type="submit" data-item="{{ item[0] }}" onclick="removeToggle(event)">Remove</button>
               </form>
             
             <form action="{{ url_for('go_to_website') }}" method="get" target="_blank" style="display:inline;">

@@ -131,7 +131,9 @@ h1 {
 .vex-dialog-form { 
     background-color: rgba(100, 100, 100, 0.7);;
 }
-
+.vex-dialog-button-secondary.vex-dialog-button.vex-last {
+    margin-top: 5px;
+}
 /* Header Styling */
 h1 {
     text-align: center;
