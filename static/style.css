@@ -357,6 +357,9 @@ a {
   transform: translateY(25%);
       }
     
+      h1 {
+        padding-left: 1rem;
+      }
   }
   
   /* For medium screens (e.g. tablet) */
