@@ -15,7 +15,7 @@ body {
     font-family: Arial, sans-serif;
     color: #000;
     line-height: 1.6;
-    padding: 10px 15px;
+    padding-top: 3.5rem;
     background-color: #FFD700     
 }
 body.dark-mode {
@@ -296,8 +296,7 @@ a {
     background-color: #FFD700;
     color: white;
     z-index: 1000; /* Ensures the navbar is above other elements */
-    align-items: center;
-    gap: 1rem;
+    margin-bottom: 1.3rem;
 } 
 .navbar.dark-mode {
     background-color: #333;
