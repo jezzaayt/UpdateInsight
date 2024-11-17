@@ -5,14 +5,11 @@ This Flask application allows users to monitor specified websites for changes. W
 
 ## Features
 
-- **Website Monitoring**: Check for content changes on specified websites.
-- **Real-Time Notifications**: Display changes using [`Notyf`](https://github.com/caroso1222/notyf) notifications in a user-friendly way.
+- **Website Monitoring**: Check for content changes on specified websites. Display changes using [`Notyf`](https://github.com/caroso1222/notyf) notifications in a user-friendly way.
 - **Modals and Prompts**: Use [`Vex`](https://github.com/HubSpot/vex/) for user-friendly modals and confirmation prompts.
 - **AJAX Updates**: Avoid page reloads when checking for updates, improving the user experience.
 - **Persistance Local Storage**: User changes on order of groupings or if toggle of groupings is showing is local to the machine.
 - **Flexible Grouping and Item Organization**: Easily reorder of their groups to suit your preferences.
-
-
 
 
 ## Prerequisites
@@ -51,10 +48,10 @@ project-directory/
 ## Themes
 Switching themes on the top right icon button. 
 
-1. **Bright Theme**
+- **Bright Theme**
    - Bright, with yellow more of a light mode but with yellow background over white.
 
-2. **Dark Theme**
+-. **Dark Theme**
    - A usual dark mode/theme with black theme. 
 
 
