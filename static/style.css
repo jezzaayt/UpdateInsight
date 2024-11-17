@@ -276,6 +276,10 @@ a {
 
 #dataTable {
     width: 100%;
+    padding: 1rem;
+}
+.table-responsive {
+    overflow: auto;
 }
 
 .nav-link    {
@@ -353,8 +357,9 @@ a {
       }
     
       h1 {
-        padding-left: 1rem;
-      }
+        padding-left: 15%;
+      } 
+
   }
   
   /* For medium screens (e.g. tablet) */
