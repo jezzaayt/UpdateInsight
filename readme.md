@@ -51,7 +51,7 @@ Switching themes on the top right icon button.
 - **Bright Theme**
    - Bright, with yellow more of a light mode but with yellow background over white.
 
--. **Dark Theme**
+- **Dark Theme**
    - A usual dark mode/theme with black theme. 
 
 
