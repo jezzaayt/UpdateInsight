@@ -1,5 +1,9 @@
-from flask import Blueprint, render_template, jsonify
+from flask import Blueprint, render_template, jsonify, request, send_file, Response
 import json
+import csv
+from openpyxl import Workbook
+import io 
+import functions
 
 table_blueprint = Blueprint('table', __name__)
 
@@ -41,11 +45,72 @@ def set_visibility(url):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@table_blueprint.route('/download_data', methods=['POST'])
+def download_data():
+    url_data = functions.load_data()
+
+     # Get the data to be downloaded
+    data = []  # Replace with your actual data
+    grouped_url_data = {}
+    for url, data in url_data.items():
+        group = data.get('group')
+        if group not in grouped_url_data:
+            grouped_url_data[group] = []
+        grouped_url_data[group].append((url, data))
+    print(data)
+ 
+
+    # Get the file format from the request
+    file_format = request.form.get('file_format')
+    print("File format:", file_format)
+    if file_format == 'csv':
+        # Create a CSV file
+        
+        csv_file = io.StringIO()
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(['Group', 'URL', 'Title', 'Selector', 'Added Date', 'Last Checked', "Content"]) 
+        for group, items in grouped_url_data.items():
+            for item in items:
+                csv_writer.writerow([
+                            group, 
+                            item[0], 
+                            item[1]['title'], 
+                            item[1]['selector'], 
+                            item[1]['added_date'], 
+                            item[1]['last_checked'],
+                            item[1]['previous_content']
+                        ])        
+        csv_file.seek(0)
+        return Response(csv_file, mimetype='text/csv', headers={'Content-Disposition': 'attachment;filename=data.csv'})
+    elif file_format == 'xlsx':
+            # Create an XLSX file
+            wb = Workbook()
+            ws = wb.active
+            ws.title = 'Data'
+            ws.append(['Group', 'URL', 'Title', 'Selector', 'Added Date', 'Last Checked', "Content"])  # Header row
+            for group, items in grouped_url_data.items():
+                for item in items:
+                    ws.append([
+                        group, 
+                        item[0], 
+                        item[1]['title'], 
+                        item[1]['selector'], 
+                        item[1]['added_date'], 
+                        item[1]['last_checked'],
+                        item[1]['previous_content']
+                    ])
+            xlsx_file = io.BytesIO()
+            wb.save(xlsx_file)
+            xlsx_file.seek(0)
+            return Response(xlsx_file, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers={'Content-Disposition': 'attachment;filename=data.xlsx'})
+    else:
+        return 'Invalid file format', 400
 @table_blueprint.route('/')
 def table():
     data = get_all_data(return_response=False)  # Get raw data
     if isinstance(data, dict) and "error" in data:
         data = []  # Handle errors gracefully
     return render_template('table.html', data = data.values())
+
 
 

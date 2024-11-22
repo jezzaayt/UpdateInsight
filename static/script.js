@@ -33,6 +33,26 @@ document.addEventListener('DOMContentLoaded', () => {
           
       });
     });
+    document.getElementById('download-data').addEventListener('click', function() {
+      console.log('Download data button clicked');
+      const fileFormat = prompt('Choose a file format: CSV or XLSX');
+      const formData = new FormData();
+      console.log(fileFormat);
+      formData.append('file_format', fileFormat);
+      fetch('/table/download_data', {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => response.blob())
+      .then(blob => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `data.${fileFormat.toLowerCase()}`;
+          a.click();
+          URL.revokeObjectURL(url);
+      });
+  });
   });
 
   function applyTheme() {
@@ -72,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Theme saved as light');
       applyTheme();
     }
+   
   }
   
   // Call applyTheme when the page loads
@@ -127,8 +148,4 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   }
-  
-  document.addEventListener('DOMContentLoaded', () => {
-    restoreOrderFromLocalStorage(); // Restore the order when the page loads
-  });
   
