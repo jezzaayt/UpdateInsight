@@ -146,7 +146,7 @@ def check_website_changes(url):
     url_data = functions.load_data()
     data = url_data.get(url)
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
-    data["check_count"] += 1
+    
     if not data:
         # Check if there's a matching URL in the database using a wildcard
         # wildcard fix not great but should work 
@@ -167,6 +167,9 @@ def check_website_changes(url):
 
             if current_content:
                 previous_hash = data["previous_content_hash"]
+                if "check_count" not in data:
+                    data["check_count"] = 0
+                data["check_count"] += 1
                 if current_hash != previous_hash:
                     
                     previous_content = data["previous_content"]
@@ -177,6 +180,7 @@ def check_website_changes(url):
                             data["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
                             data["previous_content"] = current_content
                             data["previous_content_hash"] = current_hash  # Update the previous content hash
+                            
             
                             functions.save_data(url_data)  # Save updated data
                             return jsonify({
@@ -211,6 +215,9 @@ def check_website_changes(url):
 
     if current_content:
         previous_hash = data.get("previous_content_hash")
+        if "check_count" not in data:
+            data["check_count"] = 0
+        data["check_count"] += 1
         if current_hash != previous_hash:
             previous_content = url_data[url].get("previous_content")
             if previous_content and current_content != previous_content:
