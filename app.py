@@ -294,16 +294,15 @@ def download_item(url):
     # Create a CSV file with the data for the single item
     csv_file = io.StringIO()
     csv_writer = csv.writer(csv_file)
-    csv_writer.writerow(['URL', 'Title', 'Selector', 'Added Date', 'Last Checked', "Content"])
+    csv_writer.writerow(['URL', 'Title', 'Group', 'Selector', 'Added Date', 'Last Checked', "Content", "Checked Count"])
     csv_writer.writerow([
         url,
         data.get('title'),
+        data.get('group'),
         data.get('selector'),
         data.get('added_date'),
         data.get('last_checked'),
         data.get('previous_content'),
-        data.get('group'),
-        data.get('visibility'),
         data.get("check_count")
     ])
     csv_file.seek(0)
