@@ -78,7 +78,8 @@ def download_data():
                             item[1]['selector'], 
                             item[1]['added_date'], 
                             item[1]['last_checked'],
-                            item[1]['previous_content']
+                            item[1]['previous_content'],
+                            item[1]['check_count']
                         ])        
         csv_file.seek(0)
         return Response(csv_file, mimetype='text/csv', headers={'Content-Disposition': 'attachment;filename=data.csv'})
@@ -97,7 +98,9 @@ def download_data():
                         item[1]['selector'], 
                         item[1]['added_date'], 
                         item[1]['last_checked'],
-                        item[1]['previous_content']
+                        item[1]['previous_content'],
+                        item[1]['check_count']
+                        
                     ])
             xlsx_file = io.BytesIO()
             wb.save(xlsx_file)

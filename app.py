@@ -110,7 +110,8 @@ def index():
                     "added_date": current_time,
                     "last_checked": None,
                     "group": group,  # Add group to the URL data
-                    "visibility": True
+                    "visibility": True,
+                    "check_count": 0
                 }
             flash(f"URL added successfully! Title: {title}", "success")
             functions.save_data(url_data)
@@ -145,6 +146,7 @@ def check_website_changes(url):
     url_data = functions.load_data()
     data = url_data.get(url)
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    data["check_count"] += 1
     if not data:
         # Check if there's a matching URL in the database using a wildcard
         # wildcard fix not great but should work 
@@ -162,7 +164,7 @@ def check_website_changes(url):
 
             # Fetch the content 
             current_content, current_hash, error_message = get_content(new_url, data["selector"])
-            
+
             if current_content:
                 previous_hash = data["previous_content_hash"]
                 if current_hash != previous_hash:
@@ -299,7 +301,10 @@ def download_item(url):
         data.get('selector'),
         data.get('added_date'),
         data.get('last_checked'),
-        data.get('previous_content')
+        data.get('previous_content'),
+        data.get('group'),
+        data.get('visibility'),
+        data.get("check_count")
     ])
     csv_file.seek(0)
     title = data.get('title')
