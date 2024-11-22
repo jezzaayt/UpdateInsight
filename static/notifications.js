@@ -141,6 +141,7 @@ function toggleInfo() {
 
 function removeToggle(event) {
 const item = event.target.dataset.item;
+console.log(item);
 if (item) {
     vex.dialog.confirm  ({
   
@@ -155,6 +156,22 @@ buttons: [
       className: 'vex-dialog-button-primary',
       click: function () {
         console.log('Confirmed!');
+        // call back to python to remove
+        fetch(`/remove/${encodeURIComponent(item)}`, {
+          method: 'POST'
+        })
+          .then(response => {
+            console.log('Response received:', response);
+            window.location.reload();
+            return response.json();
+          })
+          .then(data => {
+            console.log('Data received:', data);
+            window.location.reload();
+          })
+          .catch(error => {
+            console.error('Error occurred:', error);
+          });
         vex.close(this);
       }
     },
@@ -169,27 +186,14 @@ buttons: [
       }
     }
   ],
-    callback: function (value) {
-        if (value) {
-        // call back to python to remove
-        fetch(`/remove/${encodeURIComponent(item)}`, {
-            method: 'POST'
-          })
-          .then(response => {
-            console.log('Response received:', response);
-            window.location.reload();
-            return response.json();
-          })
-          .then(data => {
-            console.log('Data received:', data);
-            window.location.reload();
-          })
-          .catch(error => {
-            console.error('Error occurred:', error);
-          });
-        }
+  callback: function (value) {
+    if (value) {
+      console.log('Confirmed!');
+    } else {
+      console.log('Cancelled!');
     }
-    });
+  }
+});
 } else {
     console.error('Item is not defined');
 }

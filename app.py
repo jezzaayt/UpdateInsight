@@ -246,8 +246,9 @@ def check_website_changes(url):
     if not is_ajax:
         return redirect(url_for("index"))
 
-@app.route("/remove/<path:url>", methods=["POST"])
+@app.route("/remove/<path:url>", methods=["GET","POST"])
 def remove_url(url):
+    print(f"Removing URL: {url}")  # Add debug logging
     url_data = functions.load_data()
     if url in url_data:
         del url_data[url]  # Remove the URL from the data
