@@ -8,6 +8,9 @@ from bs4 import BeautifulSoup
 import json
 from datetime import datetime
 import hashlib
+import csv
+from openpyxl import Workbook
+import functions
 
 
 app = Flask(__name__)
@@ -15,23 +18,14 @@ app.register_blueprint(table.table_blueprint, url_prefix='/table')
 # Set a dummy secret key to avoid session errors
 app.secret_key = 'dummy_secret_key'  # You can change this to any random string
 
-# Load or initialize URL tracking data
-def load_data():
-    try:
-        with open("url_data.json", "r") as file:
-            return json.load(file)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return {}
+
 @app.template_filter('decode_url')
 def decode_url_filter(url):
     import urllib.parse
     return urllib.parse.unquote(url.replace("amp%3B", ""))
 
 
-# Save URL tracking data
-def save_data(url_data):
-    with open("url_data.json", "w") as file:
-        json.dump(url_data, file)
+
 # Check website content for changes
 def get_content(url, selector=None):
     try:
@@ -54,10 +48,10 @@ def get_content(url, selector=None):
 def edit_title():
     url = request.form.get('url')
     new_title = request.form.get('new_title')
-    url_data = load_data()
+    url_data = functions.load_data()
     if url in url_data:
         url_data[url]['title'] = new_title
-        save_data(url_data)
+        functions.save_data(url_data)
         flash('Title updated successfully!', 'success')
     else:
         flash('Error updating title', 'error')
@@ -74,7 +68,7 @@ def get_change_snippet(previous_content, current_content):
     return f"<br> Previous: '{previous_snippet}' <br> Current: '{current_snippet} <br> Current Time: {current_time}'"
 @app.route("/", methods=["GET", "POST"])
 def index():
-    url_data = load_data()
+    url_data = functions.load_data()
 
     # Handle form submission for new URL and optional selector
     # if https is not in the url add it
@@ -117,7 +111,7 @@ def index():
                     "visibility": True
                 }
             flash(f"URL added successfully! Title: {title}", "success")
-            save_data(url_data)
+            functions.save_data(url_data)
         else:
             flash("Please enter a URL.", "error")
 
@@ -146,7 +140,7 @@ def go_to_website():
     return redirect(url)
 @app.route("/check/<path:url>")
 def check_website_changes(url):
-    url_data = load_data()
+    url_data = functions.load_data()
     data = url_data.get(url)
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     if not data:
@@ -180,7 +174,7 @@ def check_website_changes(url):
                             data["previous_content"] = current_content
                             data["previous_content_hash"] = current_hash  # Update the previous content hash
             
-                            save_data(url_data)  # Save updated data
+                            functions.save_data(url_data)  # Save updated data
                             return jsonify({
                                 "status": "success",
                                 "message": f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}"
@@ -189,7 +183,7 @@ def check_website_changes(url):
                         if is_ajax:
                             # If no changes detected, update last checked time
                             data["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
-                            save_data(url_data)  # Save updated data
+                            functions.save_data(url_data)  # Save updated data
                             return jsonify({"status": "success", "message": "No changes detected."})
                 else:
                     if is_ajax:
@@ -223,7 +217,7 @@ def check_website_changes(url):
                     url_data[url]["previous_content"] = current_content
                     url_data[url]["previous_content_hash"] = current_hash  # Update the previous content hash
     
-                    save_data(url_data)  # Save updated data
+                    functions.save_data(url_data)  # Save updated data
                     return jsonify({
                         "status": "success",
                         "message": f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}"
@@ -232,7 +226,7 @@ def check_website_changes(url):
                 if is_ajax:
                     # If no changes detected, update last checked time
                     url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
-                    save_data(url_data)  # Save updated data
+                    functions.save_data(url_data)  # Save updated data
                     return jsonify({"status": "success", "message": "No changes detected."})
         else:
             if is_ajax:
@@ -245,17 +239,17 @@ def check_website_changes(url):
     url_data[url]["previous_content"] = current_content
     url_data[url]["previous_content_hash"] = current_hash  # Update the previous content hash
     url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
-    save_data(url_data)
+    functions.save_data(url_data)
 
     if not is_ajax:
         return redirect(url_for("index"))
 
 @app.route("/remove/<path:url>", methods=["POST"])
 def remove_url(url):
-    url_data = load_data()
+    url_data = functions.load_data()
     if url in url_data:
         del url_data[url]  # Remove the URL from the data
-        save_data(url_data)  # Save the updated data
+        functions.save_data(url_data)  # Save the updated data
         flash(f"Removed {url} successfully!", "success")
     else:
         flash(f"{url} not found!", "error")
@@ -263,24 +257,24 @@ def remove_url(url):
 
 @app.route("/hide/<path:url>", methods=["POST"])
 def hide_url(url):
-    url_data = load_data()
+    url_data = functions.load_data()
     if url in url_data:
         url_data[url]["visibility"] = False  # Set the visibility to False
-        save_data(url_data)  # Save the updated data
+        functions.save_data(url_data)  # Save the updated data
         flash(f"Removed {url} successfully!", "success")
     else:
         flash(f"{url} not found!", "error")
     return redirect(url_for("index"))
 @app.route("/show_all/<group>", methods=["POST"])
 def show_all_url(group):
-    url_data = load_data()
+    url_data = functions.load_data()
     found = False
     for url, data in url_data.items():
         if data.get("group") == group:
             data["visibility"] = True  # Set the visibility to True
             found = True
     if found:
-        save_data(url_data)  # Save the updated data
+        functions.save_data(url_data)  # Save the updated data
         flash(f"All URLs in group {group} are now visible!", "success")
     else:
         flash(f"No URLs found in group {group}.", "error")
