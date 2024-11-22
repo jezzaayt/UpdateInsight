@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory, Response
 import requests
 import urllib
 import table
@@ -11,6 +11,7 @@ import hashlib
 import csv
 from openpyxl import Workbook
 import functions
+import io
 
 
 app = Flask(__name__)
@@ -279,7 +280,33 @@ def show_all_url(group):
     else:
         flash(f"No URLs found in group {group}.", "error")
     return redirect(url_for("index"))
+@app.route("/download/<path:url>", methods=["GET"])
+def download_item(url):
+    url_data = functions.load_data()
+    data = url_data.get(url)
+    if not data:
+        return "Item not found", 404
 
+    # Create a CSV file with the data for the single item
+    csv_file = io.StringIO()
+    csv_writer = csv.writer(csv_file)
+    csv_writer.writerow(['URL', 'Title', 'Selector', 'Added Date', 'Last Checked', "Content"])
+    csv_writer.writerow([
+        url,
+        data.get('title'),
+        data.get('selector'),
+        data.get('added_date'),
+        data.get('last_checked'),
+        data.get('previous_content')
+    ])
+    csv_file.seek(0)
+    title = data.get('title')
+    dateadded = data.get('added_date')
+    filename = f"{title} - {dateadded}.csv"
+    # Return the CSV file as a download
+    return Response(csv_file, mimetype='text/csv', headers={
+        'Content-Disposition': f'attachment;filename="{filename}".csv'
+    })
 
 @app.route('/favicon.ico')
 def favicon():

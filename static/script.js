@@ -33,8 +33,19 @@ document.addEventListener('DOMContentLoaded', () => {
           
       });
     });
-    document.getElementById('download-data').addEventListener('click', function() {
-      console.log('Download data button clicked');
+      const downloadLinks = document.querySelectorAll('.download-link');
+
+      downloadLinks.forEach(function(link) {
+        console.log(link);
+        link.addEventListener('click', function(event) {
+          event.preventDefault(); // prevent default link behavior
+          window.location.href = link.getAttribute('data-url');
+        });
+      });
+  const downloadAllBtn = document.getElementById('download-data');
+  console.log(downloadAllBtn);
+  downloadAllBtn.addEventListener('click', function() {
+    console.log('Download data button clicked');
       const fileFormat = prompt('Choose a file format: CSV or XLSX');
       const formData = new FormData();
       console.log(fileFormat);
@@ -53,6 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
           URL.revokeObjectURL(url);
       });
   });
+
+
   });
 
   function applyTheme() {

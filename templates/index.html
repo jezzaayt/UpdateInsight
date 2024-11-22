@@ -112,7 +112,11 @@
               <form action="{{ url_for('hide_url', url=item[0]) }}" method="POST" style="display:inline;">
                 <button type="submit">Hide</button>
               </form>
-            
+              <a href="#" class="download-link" data-url="{{ url_for('download_item', url=item[0]) }}">
+                <i class="fas fa-download"></i>
+            </a>
+        
+          
             </li>
 
        
