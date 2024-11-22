@@ -326,7 +326,9 @@ a {
     color: #FFD700; /* Highlight color on hover for dark mode */
 }
 
-
+.fa-trash:hover {
+    color: #FFD700;
+}
 
 /* For small screens (e.g. mobile) */
 @media (max-width: 576px) {
