@@ -10,6 +10,7 @@ This Flask application allows users to monitor specified websites for changes. W
 - **AJAX Updates**: Avoid page reloads when checking for updates, improving the user experience.
 - **Persistance Local Storage**: User changes on order of groupings or if toggle of groupings is showing is local to the machine.
 - **Flexible Grouping and Item Organization**: Easily reorder of their groups to suit your preferences.
+- **Downloadability File Export**: Consider the possibility of adding a feature to download each item's data from the JSON into a CSV or XLSX file for use in other software 
 
 
 ## Prerequisites
@@ -56,10 +57,6 @@ Switching themes on the top right icon button.
 
 
 ## Future Enhancements
-
-- **Dynamic Content Update**: Automatic updates at regular intervals, eliminating the need to manually click a button every few hours.
-
-- **Downloadability File Export**: Consider the possibility of adding a feature to download each item's data from the JSON into a CSV or JSON file for use in other software 
 
 - **Version History**: Storage of all changes including the date and text each.
 
