@@ -1,17 +1,18 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory, Response
 import requests
 import urllib
 import table
-from urllib.parse import urlparse, urlunparse
 import urllib.parse
-from bs4 import BeautifulSoup
 import json
-from datetime import datetime
 import hashlib
 import csv
-from openpyxl import Workbook
 import functions
 import io
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory, Response
+from urllib.parse import urlparse, urlunparse
+from bs4 import BeautifulSoup
+from datetime import datetime
+from openpyxl import Workbook
+
 
 
 app = Flask(__name__)
