@@ -326,8 +326,11 @@ a {
     color: #FFD700; /* Highlight color on hover for dark mode */
 }
 
-.fa-trash:hover {
+.fa-trash.dark-mode:hover {
     color: #FFD700;
+}
+.fa-trash:hover {
+    color: #fff;
 }
 
 /* For small screens (e.g. mobile) */
