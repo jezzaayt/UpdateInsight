@@ -82,11 +82,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         objN = currentBaseUrl
                         const previousContent = data.previous_content || "No previous content available";
                         const lastCheckedDate = data.last_checked || "N/A";
+                        const addedDate = data.added_date || "N/A";
                         const title = data.title || "N/A";
                         const buttons = document.querySelectorAll('.notyf__dismiss-btn');
                         buttons.forEach(button => button.click());
-                        notyf.success(`Current content for ${rURL} <br>Title: ${title}<br> ${previousContent}<br>Last checked:${lastCheckedDate}`);
-
+                        if (lastCheckedDate === "N/A") {
+                            notyf.success(`Current content for ${rURL} <br>Title: ${title}<br> ${previousContent}<br>Added Date: ${addedDate}`);
+                            
+                        } else {
+                            notyf.success(`Current content for ${rURL} <br>Title: ${title}<br> ${previousContent}<br>Last checked: ${lastCheckedDate}`);
+                        }
                     } else {
                         
                         
@@ -105,7 +110,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     // console.log("Error:", error);
                     const buttons = document.querySelectorAll('.notyf__dismiss-btn');
                     buttons.forEach(button => button.click());
-                    notyf.error('An error occurred while fetching data.');
+                    notyf.error(`An error occurred while fetching data: ${error}`);
+                    
                 });
                 
                 
