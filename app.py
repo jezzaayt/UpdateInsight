@@ -105,7 +105,8 @@ def index():
                     "url": url,
                     "title": title,
                     "selector": selector,  # Store selector, can be None
-                    "previous_content": content,  # Store the content as previous_content
+                    "original_content": content,
+                    "previous_content":  None,  
                     "previous_content_hash": content_hash,
                     "added_date": current_time,
                     "last_checked": None,
@@ -301,25 +302,28 @@ def download_item(url):
     # Create a CSV file with the data for the single item
     csv_file = io.StringIO()
     csv_writer = csv.writer(csv_file)
-    csv_writer.writerow(['URL', 'Title', 'Group', 'Selector', 'Added Date', 'Last Checked', "Content", "Checked Count"])
+    csv_writer.writerow(['URL', 'Title', 'Group', 'Selector', 'Added Date', 'Last Checked', "Original Content", "Previous Content", "Checked Count"])
     csv_writer.writerow([
         url,
-        data.get('title'),
-        data.get('group'),
-        data.get('selector'),
-        data.get('added_date'),
-        data.get('last_checked'),
-        data.get('previous_content'),
-        data.get("check_count")
+        data.get('title', ''),
+        data.get('group', ''),
+        data.get('selector', ''),
+        data.get('added_date', ''),
+        data.get('last_checked', ''),
+        data.get('original_content', '')[:20000],
+        data.get('previous_content', '')[:20000],
+        data.get("check_count", 0)
     ])
     csv_file.seek(0)
+    csv_contents = csv_file.getvalue()
+
     title = data.get('title')
     dateadded = data.get('added_date')
     filename = f"{title} - {dateadded}.csv"
     # Return the CSV file as a download
-    return Response(csv_file, mimetype='text/csv', headers={
-        'Content-Disposition': f'attachment;filename="{filename}".csv'
-    })
+    return Response(csv_contents, mimetype='text/csv', headers={
+    'Content-Disposition': f'attachment;filename="{filename}".csv'
+})
 
 @app.route('/favicon.ico')
 def favicon():

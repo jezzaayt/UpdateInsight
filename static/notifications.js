@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         // console.log('data:', data);
                         // console.log(Object.keys(data));
                         objN = currentBaseUrl
-                        const previousContent = data.previous_content || "No previous content available";
+                        const previousContent = data.previous_content || data.original_content || "No previous content available";
                         const lastCheckedDate = data.last_checked || "N/A";
                         const addedDate = data.added_date || "N/A";
                         const title = data.title || "N/A";

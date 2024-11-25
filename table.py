@@ -68,19 +68,23 @@ def download_data():
         
         csv_file = io.StringIO()
         csv_writer = csv.writer(csv_file)
-        csv_writer.writerow(['Group', 'URL', 'Title', 'Selector', 'Added Date', 'Last Checked', "Content"]) 
+        csv_writer.writerow(['Group', 'URL', 'Title', 'Selector', 'Added Date', 'Last Checked', "Original Content", "Previous Content"]) 
         for group, items in grouped_url_data.items():
             for item in items:
-                csv_writer.writerow([
-                            group, 
+                try:
+                    csv_writer.writerow([
+                        group, 
                             item[0], 
-                            item[1]['title'], 
-                            item[1]['selector'], 
-                            item[1]['added_date'], 
-                            item[1]['last_checked'],
-                            item[1]['previous_content'],
-                            item[1]['check_count']
-                        ])        
+                            item[1].get('title', 'Untitled'), 
+                            item[1].get('selector', ''), 
+                            item[1].get('added_date', 'Not available'), 
+                            item[1].get('last_checked', 'Not available'), 
+                            item[1].get('original_content', 'No content available')[:20000], 
+                            item[1].get('previous_content', 'No previous content')[:20000] if item[1].get('previous_content') else 'No previous content',
+                             ])
+                except KeyError as e:
+                        print(f"Error: {e} - Skipping item")
+                        continue 
         csv_file.seek(0)
         return Response(csv_file, mimetype='text/csv', headers={'Content-Disposition': 'attachment;filename=data.csv'})
     elif file_format == 'xlsx':
@@ -88,20 +92,23 @@ def download_data():
             wb = Workbook()
             ws = wb.active
             ws.title = 'Data'
-            ws.append(['Group', 'URL', 'Title', 'Selector', 'Added Date', 'Last Checked', "Content"])  # Header row
+            ws.append(['Group', 'URL', 'Title', 'Selector', 'Added Date', 'Last Checked', "Original Content", "Previous Content"])  # Header row
             for group, items in grouped_url_data.items():
                 for item in items:
-                    ws.append([
-                        group, 
-                        item[0], 
-                        item[1]['title'], 
-                        item[1]['selector'], 
-                        item[1]['added_date'], 
-                        item[1]['last_checked'],
-                        item[1]['previous_content'],
-                        item[1]['check_count']
-                        
-                    ])
+                    try:
+                        ws.append([
+                            group, 
+                            item[0], 
+                            item[1].get('title', 'Untitled'), 
+                            item[1].get('selector', ''), 
+                            item[1].get('added_date', 'Not available'), 
+                            item[1].get('last_checked', 'Not available'), 
+                            item[1].get('original_content', 'No content available'), 
+                            item[1].get('previous_content', 'No previous content'), 
+                        ])
+                    except KeyError as e:
+                        print(f"Error: {e} - Skipping item")
+                        continue
             xlsx_file = io.BytesIO()
             wb.save(xlsx_file)
             xlsx_file.seek(0)
