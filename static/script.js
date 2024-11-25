@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const accordionGroups = document.querySelectorAll('.accordion-group');
   
-   
+    restoreOrderFromLocalStorage();
     accordionGroups.forEach(group => {
         const toggleButton = group.querySelector('#toggleButton');
         const accordionBody = group.querySelector('.accordion-body');
