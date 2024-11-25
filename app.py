@@ -116,6 +116,8 @@ def index():
                     "visibility": True,
                     "check_count": 0
                 }
+            print(title)
+            print(content)
             flash(f"URL added successfully! Title: {title}", "success")
             functions.save_data(url_data)
         else:
@@ -178,28 +180,25 @@ def check_website_changes(url):
                     previous_content = data["previous_content"]
                     if previous_content and current_content != previous_content:
                         change_snippet = get_change_snippet(previous_content, current_content)
+                        keywords = [keyword.strip() for keyword in data.get("keywords", [])]
+                        detected_keywords = [keyword for keyword in keywords if keyword in change_snippet]
+
+                        message = f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}"
+
+                        if detected_keywords:
+                            message += f". Detected keywords: {', '.join(detected_keywords)}"
+
                         if is_ajax:
                             # Update last checked time here if changes are detected
                             data["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
                             data["previous_content"] = current_content
                             data["previous_content_hash"] = current_hash  # Update the previous content hash
                             
-                            # Check if there are any keywords to check
-                            if data.get("keywords"):
-                                found_keywords = []
-                                for keyword in data["keywords"]:
-                                    if keyword in current_content:
-                                        found_keywords.append(keyword)
-                                if found_keywords:
-                                    if is_ajax:
-                                        return jsonify({
-                                            "status": "success",
-                                            "message": f"Keywords found in the current content of {url}: {', '.join(found_keywords)}"
-                                        })
+            
                             functions.save_data(url_data)  # Save updated data
                             return jsonify({
                                 "status": "success",
-                                "message": f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}"
+                                "message": message
                             })
                     else:
                         if is_ajax:
@@ -236,28 +235,23 @@ def check_website_changes(url):
             previous_content = url_data[url].get("previous_content")
             if previous_content and current_content != previous_content:
                 change_snippet = get_change_snippet(previous_content, current_content)
+                keywords = [keyword.strip() for keyword in data.get("keywords", [])]
+                detected_keywords = [keyword for keyword in keywords if keyword in change_snippet]
+                message = f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}"
+
+                if detected_keywords:
+                    message += f". Detected keywords: {', '.join(detected_keywords)}"
+
                 if is_ajax:
                     # Update last checked time here if changes are detected
                     url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")
                     url_data[url]["previous_content"] = current_content
                     url_data[url]["previous_content_hash"] = current_hash  # Update the previous content hash
     
-                    # Check if there are any keywords to check
-                    if data.get("keywords"):
-                        found_keywords = []
-                        for keyword in data["keywords"]:
-                            if keyword in current_content:
-                                found_keywords.append(keyword)
-                        if found_keywords:
-                            if is_ajax:
-                                return jsonify({
-                                    "status": "success",
-                                    "message": f"Keywords found in the current content of {url}: {', '.join(found_keywords)}"
-                                })
                     functions.save_data(url_data)  # Save updated data
                     return jsonify({
                         "status": "success",
-                        "message": f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}"
+                        "message": message
                     })
             else:
                 if is_ajax:
@@ -280,7 +274,6 @@ def check_website_changes(url):
 
     if not is_ajax:
         return redirect(url_for("index"))
-
 
 @app.route("/remove/<path:url>", methods=["GET","POST"])
 def remove_url(url):
@@ -337,7 +330,7 @@ def download_item(url):
         data.get('added_date', ''),
         data.get('last_checked', ''),
         data.get('original_content', '')[:20000],
-        data.get('previous_content', '')[:20000],
+        data.get('previous_content', '') and data.get('previous_content', '')[:20000] or "",
         data.get('keywords', ""),
         data.get("check_count", 0)
     ])
