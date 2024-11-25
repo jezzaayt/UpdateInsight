@@ -87,6 +87,7 @@ def index():
         title = request.form.get("title")
         selector = request.form.get("selector")  # Optional selector input
         group = request.form.get("group")
+        keywords = [x.strip() for x in request.form.get("keywords").split(",")]
         # Always add https:// prefix to the URL
         if not url.startswith("https://"):
             url = "https://" + url
@@ -111,6 +112,7 @@ def index():
                     "added_date": current_time,
                     "last_checked": None,
                     "group": group,  # Add group to the URL data
+                    "keywords": keywords,
                     "visibility": True,
                     "check_count": 0
                 }
@@ -182,7 +184,18 @@ def check_website_changes(url):
                             data["previous_content"] = current_content
                             data["previous_content_hash"] = current_hash  # Update the previous content hash
                             
-            
+                            # Check if there are any keywords to check
+                            if data.get("keywords"):
+                                found_keywords = []
+                                for keyword in data["keywords"]:
+                                    if keyword in current_content:
+                                        found_keywords.append(keyword)
+                                if found_keywords:
+                                    if is_ajax:
+                                        return jsonify({
+                                            "status": "success",
+                                            "message": f"Keywords found in the current content of {url}: {', '.join(found_keywords)}"
+                                        })
                             functions.save_data(url_data)  # Save updated data
                             return jsonify({
                                 "status": "success",
@@ -229,6 +242,18 @@ def check_website_changes(url):
                     url_data[url]["previous_content"] = current_content
                     url_data[url]["previous_content_hash"] = current_hash  # Update the previous content hash
     
+                    # Check if there are any keywords to check
+                    if data.get("keywords"):
+                        found_keywords = []
+                        for keyword in data["keywords"]:
+                            if keyword in current_content:
+                                found_keywords.append(keyword)
+                        if found_keywords:
+                            if is_ajax:
+                                return jsonify({
+                                    "status": "success",
+                                    "message": f"Keywords found in the current content of {url}: {', '.join(found_keywords)}"
+                                })
                     functions.save_data(url_data)  # Save updated data
                     return jsonify({
                         "status": "success",
@@ -255,6 +280,7 @@ def check_website_changes(url):
 
     if not is_ajax:
         return redirect(url_for("index"))
+
 
 @app.route("/remove/<path:url>", methods=["GET","POST"])
 def remove_url(url):
@@ -312,6 +338,7 @@ def download_item(url):
         data.get('last_checked', ''),
         data.get('original_content', '')[:20000],
         data.get('previous_content', '')[:20000],
+        data.get('keywords', ""),
         data.get("check_count", 0)
     ])
     csv_file.seek(0)

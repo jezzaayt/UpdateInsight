@@ -81,6 +81,7 @@ def download_data():
                             item[1].get('last_checked', 'Not available'), 
                             item[1].get('original_content', 'No content available')[:20000], 
                             item[1].get('previous_content', 'No previous content')[:20000] if item[1].get('previous_content') else 'No previous content',
+                            ', '.join(item[1].get('keywords', ['No keywords saved'])) if item[1].get('keywords') else 'No keywords saved',
                              ])
                 except KeyError as e:
                         print(f"Error: {e} - Skipping item")
@@ -92,7 +93,7 @@ def download_data():
             wb = Workbook()
             ws = wb.active
             ws.title = 'Data'
-            ws.append(['Group', 'URL', 'Title', 'Selector', 'Added Date', 'Last Checked', "Original Content", "Previous Content"])  # Header row
+            ws.append(['Group', 'URL', 'Title', 'Selector', 'Added Date', 'Last Checked', "Original Content", "Previous Content", "Keywords"])  # Header row
             for group, items in grouped_url_data.items():
                 for item in items:
                     try:
@@ -105,6 +106,7 @@ def download_data():
                             item[1].get('last_checked', 'Not available'), 
                             item[1].get('original_content', 'No content available'), 
                             item[1].get('previous_content', 'No previous content'), 
+                            item[0], ', '.join(item[1].get('keywords', ['No keywords saved'])),
                         ])
                     except KeyError as e:
                         print(f"Error: {e} - Skipping item")
