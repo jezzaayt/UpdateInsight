@@ -17,6 +17,9 @@ This Flask application allows users to monitor specified websites for changes. W
 
 - **Python 3.8+**
 - **Flask**: `pip install flask`
+- **Requests**: `pip install requests`
+- **BeautifulSoup4**: `pip install beautifulsoup4`
+- **Openpyxl**: `pip install openpyxl`
 
 ## Project Structure
 
