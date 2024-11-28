@@ -418,7 +418,7 @@ a {
       flex-basis: 180px; /* increase the minimum width for each button */
     }
     .notify__toast {
-      width: 300px !important; /* set the width to a larger value */
+      width: 250px !important; /* set the width to a larger value */
       /* other styles */
     }
     .notyf__toast--error {
@@ -507,7 +507,6 @@ a {
     pointer-events: none;
     position: fixed;
     z-index: 9999;
-    padding: 30px;
     }
 .notyf__toast {
     max-width: 2000px; /* Adjust width as needed */
