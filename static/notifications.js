@@ -84,15 +84,17 @@ document.addEventListener('DOMContentLoaded', function() {
                         const lastCheckedDate = data.last_checked || "N/A";
                         const addedDate = data.added_date || "N/A";
                         const title = data.title || "N/A";
-                        const keyword = data.keywords || "";
-                        const keywordFound = keyword.some(keyword => previousContent.toLowerCase().includes(keyword.toLowerCase()));
+                        const keywords = data.keywords || [];
+                        console.log('keywords:', keywords);
+                        const foundKeywords = keywords.filter(keyword => previousContent.toLowerCase().includes(keyword.toLowerCase()));
+                        const keywordFound = foundKeywords.length > 0;
+                        console.log('keywordFound:', keywordFound);
                         const buttons = document.querySelectorAll('.notyf__dismiss-btn');
                         buttons.forEach(button => button.click());
                         if (lastCheckedDate === "N/A") {
-                            notyf.success(`Current content for ${rURL} <br>Title: ${title}<br> ${previousContent}<br>Added Date: ${addedDate}${keywordFound ? `<br>Keyword ${keyword} found` : ""}`);
-                            
+                            notyf.success(`Current content for ${rURL} <br>Title: ${title}${foundKeywords.length > 0 ? `<br>Keyword(s) ${foundKeywords.join(', ')} found` : ''}<br> ${previousContent}<br>Added Date: ${addedDate}`);
                         } else {
-                            notyf.success(`Current content for ${rURL} <br>Title: ${title}<br> ${previousContent}<br>Last checked: ${lastCheckedDate}${keywordFound ? `<br>Keyword ${keyword} found` : ""}`);
+                            notyf.success(`Current content for ${rURL} <br>Title: ${title}${foundKeywords.length > 0 ? `<br>Keyword(s) ${foundKeywords.join(', ')} found` : ''}<br> ${previousContent}<br>Last checked: ${lastCheckedDate}`);
                         }
                     } else {
                         
