@@ -68,7 +68,7 @@ def download_data():
         
         csv_file = io.StringIO()
         csv_writer = csv.writer(csv_file)
-        csv_writer.writerow(['Group', 'URL', 'Title', 'Selector', 'Added Date', 'Last Checked', "Original Content", "Previous Content"]) 
+        csv_writer.writerow(['Group', 'URL', 'Title', 'Selector', 'Added Date', 'Last Checked', "Original Content", "Previous Content", "Keywords"]) 
         for group, items in grouped_url_data.items():
             for item in items:
                 try:
@@ -81,7 +81,7 @@ def download_data():
                             item[1].get('last_checked', 'Not available'), 
                             item[1].get('original_content', 'No content available')[:20000], 
                             item[1].get('previous_content', 'No previous content')[:20000] if item[1].get('previous_content') else 'No previous content',
-                            ', '.join(item[1].get('keywords', ['No keywords saved'])) if item[1].get('keywords') else 'No keywords saved',
+                            ', '.join(item[1].get('keywords', ['No keywords saved'])) if item[1].get('keywords') else '',
                              ])
                 except KeyError as e:
                         print(f"Error: {e} - Skipping item")
@@ -106,7 +106,7 @@ def download_data():
                             item[1].get('last_checked', 'Not available'), 
                             item[1].get('original_content', 'No content available'), 
                             item[1].get('previous_content', 'No previous content'), 
-                            item[0], ', '.join(item[1].get('keywords', ['No keywords saved'])),
+                           ', '.join(item[1].get('keywords', [' '])),
                         ])
                     except KeyError as e:
                         print(f"Error: {e} - Skipping item")
