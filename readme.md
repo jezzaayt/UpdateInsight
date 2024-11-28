@@ -11,7 +11,7 @@ This Flask application allows users to monitor specified websites for changes. W
 - **Persistance Local Storage**: User changes on order of groupings or if toggle of groupings is showing is local to the machine.
 - **Flexible Grouping and Item Organization**: Easily reorder of their groups to suit your preferences.
 - **Downloadability File Export**: Consider the possibility of adding a feature to download each item's data from the JSON into a CSV or XLSX file for use in other software 
-
+- **Keyword Detection**: Configure keywords to monitor and receive alerts whenever these keywords are detected in newly added text.
 
 ## Prerequisites
 
