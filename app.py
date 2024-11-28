@@ -7,6 +7,7 @@ import hashlib
 import csv
 import functions
 import io
+import time
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory, Response
 from urllib.parse import urlparse, urlunparse
 from bs4 import BeautifulSoup
@@ -148,6 +149,7 @@ def go_to_website():
     return redirect(url)
 @app.route("/check/<path:url>")
 def check_website_changes(url):
+    time.sleep(2)
     url_data = functions.load_data()
     data = url_data.get(url)
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
@@ -178,15 +180,17 @@ def check_website_changes(url):
                 if current_hash != previous_hash:
                     
                     previous_content = data["previous_content"]
-                    if previous_content and current_content != previous_content:
-                        change_snippet = get_change_snippet(previous_content, current_content)
+                    original_content = data["original_content"]
+                    if (previous_content and current_content != previous_content) or (data["original_content"] and current_content != data["original_content"]):
+                        change_snippet = get_change_snippet(previous_content or data["original_content"], current_content)
                         keywords = [keyword.strip() for keyword in data.get("keywords", [])]
-                        detected_keywords = [keyword for keyword in keywords if keyword in change_snippet]
+                        detected_keywords = [keyword for keyword in keywords if keyword in current_content]
+                        print(detected_keywords)
 
                         message = f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}"
 
                         if detected_keywords:
-                            message += f". Detected keywords: {', '.join(detected_keywords)}"
+                            message += f".<br> Detected keywords: {', '.join(detected_keywords)}"
 
                         if is_ajax:
                             # Update last checked time here if changes are detected
@@ -233,15 +237,18 @@ def check_website_changes(url):
         data["check_count"] += 1
         if current_hash != previous_hash:
             previous_content = url_data[url].get("previous_content")
-            if previous_content and current_content != previous_content:
-                change_snippet = get_change_snippet(previous_content, current_content)
+            if (previous_content and current_content != previous_content) or (data["original_content"] and current_content != data["original_content"]):
+                change_snippet = get_change_snippet(previous_content or data["original_content"], current_content)
                 keywords = [keyword.strip() for keyword in data.get("keywords", [])]
-                detected_keywords = [keyword for keyword in keywords if keyword in change_snippet]
+                detected_keywords = [keyword for keyword in keywords if keyword in current_content]
                 message = f"Changes detected for {url}! Here's a snippet of the changes: {change_snippet}"
-
+                print(current_content)
+                print(keywords)
+                print(message)
                 if detected_keywords:
-                    message += f". Detected keywords: {', '.join(detected_keywords)}"
-
+                    message += f".<br> Detected keywords: {', '.join(detected_keywords)}"
+                    print(message)
+                print("after if detected keywords")
                 if is_ajax:
                     # Update last checked time here if changes are detected
                     url_data[url]["last_checked"] = datetime.now().strftime("%Y-%m-%d %H:%M")

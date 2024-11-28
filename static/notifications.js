@@ -84,13 +84,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         const lastCheckedDate = data.last_checked || "N/A";
                         const addedDate = data.added_date || "N/A";
                         const title = data.title || "N/A";
+                        const keyword = data.keywords || "";
+                        const keywordFound = keyword.some(keyword => previousContent.toLowerCase().includes(keyword.toLowerCase()));
                         const buttons = document.querySelectorAll('.notyf__dismiss-btn');
                         buttons.forEach(button => button.click());
                         if (lastCheckedDate === "N/A") {
-                            notyf.success(`Current content for ${rURL} <br>Title: ${title}<br> ${previousContent}<br>Added Date: ${addedDate}`);
+                            notyf.success(`Current content for ${rURL} <br>Title: ${title}<br> ${previousContent}<br>Added Date: ${addedDate}${keywordFound ? `<br>Keyword ${keyword} found` : ""}`);
                             
                         } else {
-                            notyf.success(`Current content for ${rURL} <br>Title: ${title}<br> ${previousContent}<br>Last checked: ${lastCheckedDate}`);
+                            notyf.success(`Current content for ${rURL} <br>Title: ${title}<br> ${previousContent}<br>Last checked: ${lastCheckedDate}${keywordFound ? `<br>Keyword ${keyword} found` : ""}`);
                         }
                     } else {
                         
