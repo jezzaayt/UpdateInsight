@@ -89,12 +89,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         const foundKeywords = keywords.filter(keyword => previousContent.toLowerCase().includes(keyword.toLowerCase()));
                         const keywordFound = foundKeywords.length > 0;
                         console.log('keywordFound:', keywordFound);
+
                         const buttons = document.querySelectorAll('.notyf__dismiss-btn');
                         buttons.forEach(button => button.click());
+                        const trimmedContent = previousContent.split(' ').slice(0, 300).join(' ');
+
                         if (lastCheckedDate === "N/A") {
-                            notyf.success(`Current content for ${rURL} <br>Title: ${title}${foundKeywords.length > 0 ? `<br>Keyword(s) ${foundKeywords.join(', ')} found` : ''}<br> ${previousContent}<br>Added Date: ${addedDate}`);
+                            notyf.success(`Current content for ${rURL} <br>Title: ${title}${foundKeywords.length > 0 ? `<br>Keyword(s) ${foundKeywords.join(', ')} found` : ''}<br> ${trimmedContent}<br>Added Date: ${addedDate}`);
                         } else {
-                            notyf.success(`Current content for ${rURL} <br>Title: ${title}${foundKeywords.length > 0 ? `<br>Keyword(s) ${foundKeywords.join(', ')} found` : ''}<br> ${previousContent}<br>Last checked: ${lastCheckedDate}`);
+                            notyf.success(`Current content for ${rURL} <br>Title: ${title}${foundKeywords.length > 0 ? `<br>Keyword(s) ${foundKeywords.join(', ')} found` : ''}<br> ${trimmedContent}<br>Last checked: ${lastCheckedDate}`);
                         }
                     } else {
                         

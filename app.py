@@ -88,7 +88,11 @@ def index():
         title = request.form.get("title")
         selector = request.form.get("selector")  # Optional selector input
         group = request.form.get("group")
-        keywords = [x.strip() for x in request.form.get("keywords").split(",")]
+        keywords = request.form.get("keywords")
+        if not keywords:
+            keywords = []
+        else:
+            keywords = [x.strip() for x in keywords.split(",")]
         # Always add https:// prefix to the URL
         if not url.startswith("https://"):
             url = "https://" + url
