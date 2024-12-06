@@ -308,6 +308,10 @@ def hide_url(url):
     else:
         flash(f"{url} not found!", "error")
     return redirect(url_for("index"))
+@app.errorhandler(404)
+def not_found(error):
+    return render_template("404.html"), 404 
+
 @app.route("/show_all/<group>", methods=["POST"])
 def show_all_url(group):
     url_data = functions.load_data()

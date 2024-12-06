@@ -55,6 +55,10 @@ body.dark-mode {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+.container.dark-mode {
+    background-color: #ffffff; /* dark mode */
+    color: #000000;
+  }
 h1, h2, h3, h4, h5, h6 {
     font-family: "Roboto", sans-serif;
    
@@ -303,7 +307,6 @@ a {
     top: 0;
     left: 0;
     width: 100%; 
-    background-color: #FFD700;
     z-index: 1000; /* Ensures the navbar is above other elements */
     margin-bottom: 1.3rem;
 } 
