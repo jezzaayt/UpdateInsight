@@ -378,7 +378,24 @@ a {
       } 
 
   }
-  
+  @media (min-width: 2560px) {
+    li button {
+      flex-basis: 220px; /* further increase the minimum width for each button */
+    }
+    .notify__toast {
+      width: 350px !important; /* adjust width for larger screens */
+    }
+    .notyf__toast--error {
+        max-width: 1200px !important; /* adjust width for larger screens */
+        flex-wrap: wrap;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        position: relative;
+        transform: translateY(25%);
+    }
+}
+
   /* For medium screens (e.g. tablet) */
   @media (min-width: 576px) and (max-width: 768px) {
     li button {
@@ -415,26 +432,44 @@ a {
             
   }
   
-  /* For large screens (e.g. desktop) */
-  @media (min-width: 769px) {
+/* For large screens (e.g. desktop) */
+@media (min-width: 769px) {
+li button {
+    flex-basis: 180px; /* increase the minimum width for each button */
+}
+.notify__toast {
+    width: 250px !important; /* set the width to a larger value */
+    /* other styles */
+}
+.notyf__toast--error {
+    max-width: 1000px !important; /* set the width to a smaller value */
+    /* other styles */
+    flex-wrap: wrap;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    position: relative;
+transform: translateY(25%);
+    }
+}
+/* For laptop screens (e.g. 1024px to 1440px) */
+@media (min-width: 1024px) and (max-width: 1440px) {
     li button {
-      flex-basis: 180px; /* increase the minimum width for each button */
+      flex-basis: 160px; /* adjust the minimum width for each button */
     }
     .notify__toast {
-      width: 250px !important; /* set the width to a larger value */
-      /* other styles */
+      width: 300px !important; /* adjust width for laptop screens */
     }
     .notyf__toast--error {
-        max-width: 1000px !important; /* set the width to a smaller value */
-        /* other styles */
+        max-width: 800px !important; /* adjust width for laptop screens */
         flex-wrap: wrap;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      position: relative;
-  transform: translateY(25%);
-      }
-  }
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        position: relative;
+        transform: translateY(25%);
+    }
+}
 .success {
     background-color: #d4edda; /* Light green background for success */
     border-color: #c3e6cb; /* Green border */
